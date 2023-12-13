@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Ground
+  - Enemy
+  - Bullet
+  - Wall
+  - GWall
+  - Weapon_Enemy
+  - Box
+  - Attack
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Player
+  - Water
+  - UI
+  - Ground
+  - Wall
+  - GWall
+  - Non-Player
+  - CanStand
+  - Enemy
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: BackGround
+    uniqueID: 2140093887
+    locked: 0
+  - name: Object
+    uniqueID: 2899410823
+    locked: 0
+  - name: Terrain
+    uniqueID: 4217361095
+    locked: 0
+  - name: UI
+    uniqueID: 1606606157
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
