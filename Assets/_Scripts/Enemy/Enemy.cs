@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
 
     public GameObject PointA;
     public GameObject PointB;
+    public GameObject Enemy_top;
     private Transform current_Point;
     private bool canMove = true;
 
@@ -24,7 +25,7 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         Collider = GetComponent<BoxCollider2D>();
         current_Point = PointA.transform;
-
+        
     }
 
     private void FixedUpdate()
@@ -39,6 +40,7 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.tag.Equals("Attack"))
         {
+            Enemy_top.SetActive(false);
             canMove = false;
             rb.bodyType = RigidbodyType2D.Static;
             Collider.enabled = false;
@@ -48,6 +50,7 @@ public class Enemy : MonoBehaviour
 
     private void SetActiveEnemy()
     {
+        Enemy_top.SetActive(true);
         canMove = true;
         rb.bodyType = RigidbodyType2D.Dynamic;
         Collider.enabled = true;

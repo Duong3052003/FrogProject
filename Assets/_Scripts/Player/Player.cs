@@ -34,37 +34,45 @@ public class Player : MonoBehaviour
 
     private Animator animator;
     private Rigidbody2D rb;
+    private KnockBack knockBack;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        knockBack =GetComponent<KnockBack>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (rb.bodyType != RigidbodyType2D.Static)
+        if (!knockBack.IsBeingKnockBack && rb.bodyType != RigidbodyType2D.Static)
         {
             move = Input.GetAxisRaw("Horizontal");
             animator.SetFloat("xVelocity", Mathf.Abs(move));
             animator.SetFloat("yVelocity", rb.velocity.y);
-            Jump();
-            WallJump();
-            WallSlide();
-            autoJump();
-            
             if (!isWallJumping)
             {
                 Flip();
             }
-
+            Jump();
+            WallJump();
+            WallSlide();
+            autoJump();
         }
-       
     }
     private void FixedUpdate()
     {
-        if (isWallJumping|| rb.bodyType != RigidbodyType2D.Static)
+        if (!knockBack.IsBeingKnockBack && rb.bodyType != RigidbodyType2D.Static)
+        {
+            Move();
+        }
+    }
+
+    #region Move
+    private void Move()
+    {
+        if (!isWallJumping && rb.bodyType != RigidbodyType2D.Static)
         {
             rb.velocity = new Vector2(move * speed, rb.velocity.y);
         }
@@ -74,16 +82,19 @@ public class Player : MonoBehaviour
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpPower * (-1f));
                 CancelInvoke(nameof(ChangedTagGroundCheck));
-                groundCheck.tag="Attack";
+                groundCheck.tag = "Attack";
             }
         }
+        
     }
+    #endregion
 
-
+    #region Jump
     private void Jump()
     {
         if (Input.GetButtonDown("Jump") )
         {
+            groundCheck.tag = "Untagged";
             if (IsGround()!=0)
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpPower);
@@ -119,8 +130,8 @@ public class Player : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && wallJumpingCounter >0f && isWallSliding)
         {
-            isWallJumping=true;
-            rb.velocity = new Vector2(-move * wallJumpingPower.x, wallJumpingPower.y);
+            isWallJumping =true;
+            rb.velocity = new Vector2(-move *wallJumpingPower.x, wallJumpingPower.y);
             wallJumpingCounter = 0f;
             rightCheck = !rightCheck;
             transform.Rotate(0f, 180f, 0f);
@@ -172,7 +183,13 @@ public class Player : MonoBehaviour
             
         }
     }
+    private void CanDown()
+    {
+        canDown = true;
+    }
+    #endregion
 
+    #region check ground/wall
     private void OnGround()
     {
         animator.SetBool("IsJumping", false);
@@ -184,12 +201,6 @@ public class Player : MonoBehaviour
     {
         groundCheck.tag = "Untagged";
     }
-
-    private void CanDown()
-    {
-        canDown = true;
-    }
-
     private bool IsWall()
     {
         return Physics2D.OverlapCircle(wallCheck.position, 0.2f, wallLayer);
@@ -209,7 +220,9 @@ public class Player : MonoBehaviour
             return 0;
         }
     }
+    #endregion
 
+    #region Flip
     private void Flip()
     {
         if (rightCheck == true && move < 0f || rightCheck == false && move > 0f)
@@ -220,6 +233,18 @@ public class Player : MonoBehaviour
             
         }
     }
+    #endregion
 
-    
+    #region Jump attack
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag.Equals("Enemy_top") || collision.gameObject.tag.Equals("Box"))
+        if (groundCheck.tag.Equals("Attack"))
+        {
+            canDown = false;
+            rb.velocity = new Vector2(Superjump.x, Superjump.y*0.7f);
+            Invoke(nameof(CanDown), downJumpingDuration/2);
+        }
+    }
+    #endregion
 }
