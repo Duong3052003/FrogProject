@@ -5,9 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class Player_Collider : MonoBehaviour
 {
-    private static Player_Collider instance;
-    public static Player_Collider Instance => instance;
-
     private Animator animator;
     private Rigidbody2D rb;
     private KnockBack knockBack;
@@ -48,7 +45,6 @@ public class Player_Collider : MonoBehaviour
     private void TakeDamage()
     {
         knockBack.CallKnockBack(direction, Vector2.up, Input.GetAxisRaw("Horizontal"));
-        Debug.Log(direction);
     }
 
     private IEnumerator GetHurt()

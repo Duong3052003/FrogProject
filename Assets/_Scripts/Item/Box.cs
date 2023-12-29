@@ -31,12 +31,16 @@ public class Box : MonoBehaviour
         hp = hp - 1;
         if(hp <= 0)
         {
-            Box_Break.SetActive(true);
-            Destroy(gameObject);
+            Breaked();
         }
         else
         {
             Animator.SetTrigger("Hited");
         }
+    }
+    void Breaked()
+    {
+        Box_Break.SetActive(true);
+        Destroy(gameObject);
     }
 }

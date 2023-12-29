@@ -7,14 +7,16 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {   
     private float move;
-    private bool rightCheck=true;
+    public static bool rightCheck=true;
     private bool doubleJump;
+    public static bool wallJump=true;
+    public static bool wallSlide=true;
 
     private bool isWallSliding;
     private bool isWallJumping;
 
     [SerializeField] private float speed = 5f;
-    [SerializeField] private float jumpPower = 15f;
+    [SerializeField] public static float jumpPower = 15f;
     private float downJumpingDuration = 0.6f;
     private bool canDown;
     private Vector2 Superjump = new Vector2(2f,18f);
@@ -128,7 +130,7 @@ public class Player : MonoBehaviour
 
         }
 
-        if (Input.GetButtonDown("Jump") && wallJumpingCounter >0f && isWallSliding)
+        if (Input.GetButtonDown("Jump") && wallJumpingCounter >0f && isWallSliding && wallJump == true)
         {
             isWallJumping =true;
             rb.velocity = new Vector2(-move *wallJumpingPower.x, wallJumpingPower.y);
@@ -147,7 +149,7 @@ public class Player : MonoBehaviour
 
     private void WallSlide()
     {
-        if(IsWall() && IsGround() == 0 && move!=0)
+        if(IsWall() && IsGround() == 0 && move!=0 && wallSlide==true)
         {
             isWallSliding = true;
             rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y,-wallSlidingSpeed,float.MaxValue));
