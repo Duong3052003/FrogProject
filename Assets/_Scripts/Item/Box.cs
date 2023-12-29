@@ -5,6 +5,8 @@ using UnityEngine;
 public class Box : MonoBehaviour
 {
     [SerializeField] private GameObject Box_Break;
+    [SerializeField] private GameObject groundCheck;
+    [SerializeField] private LayerMask groundLayer;
     private Animator Animator;
 
     private int hp = 2;
@@ -23,6 +25,17 @@ public class Box : MonoBehaviour
         if (collision.gameObject.tag.Equals("Attack"))
         {
             TakeDamaged();
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (Physics2D.OverlapCircle(groundCheck.transform.position, 0.3f, groundLayer))
+        {
+            gameObject.tag = "Box";
+        }
+        if(collision.gameObject.tag.Equals("Weapon_Enemy") || collision.gameObject.tag.Equals("Enemy"))
+        {
+            Breaked();
         }
     }
 
