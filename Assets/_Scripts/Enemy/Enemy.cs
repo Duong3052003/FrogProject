@@ -47,6 +47,17 @@ public class Enemy : MonoBehaviour
             animator.SetTrigger("Death");
         }
     }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag.Equals("Attack"))
+        {
+            Enemy_top.SetActive(false);
+            canMove = false;
+            rb.bodyType = RigidbodyType2D.Static;
+            Collider.enabled = false;
+            animator.SetTrigger("Death");
+        }
+    }
 
     private void SetActiveEnemy()
     {

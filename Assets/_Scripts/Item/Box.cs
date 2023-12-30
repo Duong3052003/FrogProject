@@ -7,6 +7,7 @@ public class Box : MonoBehaviour
     [SerializeField] private GameObject Box_Break;
     [SerializeField] private GameObject groundCheck;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private LayerMask enemyLayer;
     private Animator Animator;
 
     private int hp = 2;
@@ -29,14 +30,20 @@ public class Box : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (Physics2D.OverlapCircle(groundCheck.transform.position, 0.3f, groundLayer))
+        if (((1 << collision.gameObject.layer) & groundLayer) != 0)
         {
-            gameObject.tag = "Box";
+            StartCoroutine(tagBox());
         }
-        if(collision.gameObject.tag.Equals("Weapon_Enemy") || collision.gameObject.tag.Equals("Enemy"))
+        if (((1 << collision.gameObject.layer) & enemyLayer) != 0)
         {
             Breaked();
         }
+    }
+
+    private IEnumerator tagBox()
+    {
+        yield return new WaitForSeconds(1);
+        gameObject.tag = "Box";
     }
 
     void TakeDamaged()

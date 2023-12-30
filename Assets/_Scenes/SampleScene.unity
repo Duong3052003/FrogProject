@@ -2034,6 +2034,9 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 17856
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!4 &487987932 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2088974651151391162, guid: d17e12901b6580f4e9e2ec23b0d133ab, type: 3}
