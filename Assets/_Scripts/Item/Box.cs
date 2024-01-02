@@ -30,13 +30,13 @@ public class Box : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (((1 << collision.gameObject.layer) & groundLayer) != 0)
-        {
-            StartCoroutine(tagBox());
-        }
         if (((1 << collision.gameObject.layer) & enemyLayer) != 0)
         {
             Breaked();
+        }
+        if (((1 << collision.gameObject.layer) & groundLayer) != 0)
+        {
+            StartCoroutine(tagBox());
         }
     }
 

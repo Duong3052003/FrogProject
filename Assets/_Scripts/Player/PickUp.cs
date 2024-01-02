@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PickUp : MonoBehaviour
@@ -25,8 +26,7 @@ public class PickUp : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.J))
                 {
                     grabbing = true;
-                    grabedOject=hit.collider.gameObject;
-                    
+                    grabedOject=hit.collider.gameObject;  
                 }
             }
             else if (grabedOject != null)
@@ -49,6 +49,14 @@ public class PickUp : MonoBehaviour
                 }
             }
         }
+
+        if (grabedOject.IsDestroyed())
+        {
+            Player.jumpPower = 15f;
+            Player.wallJump = true;
+            Player.wallSlide = true;
+        }
+
         if (grabbing == true)
         {
             grabedOject.transform.position = grabPoint.position;
@@ -63,5 +71,6 @@ public class PickUp : MonoBehaviour
             Player.wallJump = true;
             Player.wallSlide = true;
         }
+    
     }
 }
