@@ -1,34 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Player_Hp : MonoBehaviour
 {
-    public static int hp = 3;
-    [SerializeField] private Image[] hearts;
-    [SerializeField] private Sprite heart;
-    [SerializeField] private Sprite heart_empty;
+    protected int hp = 3;
 
-    // Update is called once per frame
-    private void Awake()
+    protected bool IsDead()
     {
-        hp = 3;
+        return hp <= 0;
     }
 
-    void Update()
+    public virtual void TakeDamage()
     {
-        foreach(Image img in hearts)
-        {
-            img.sprite = heart_empty;
-        }
-        for(int i = 0; i < hp; i++)
-        {
-            hearts[i].sprite = heart;
-        }        
-    }
-    public static void TakeDamage()
-    {
-        hp=hp-1;
+        hp -=1;
     }
 }

@@ -7,54 +7,65 @@ public class Player_Collider : MonoBehaviour
 {
     private Animator animator;
     private Rigidbody2D rb;
-    private KnockBack knockBack;
 
     private Vector2 direction;
 
-    private void Start()
+    [SerializeField] private LayerMask enemy;
+
+    private Player_Ctrl player_ctrl;
+
+    private void Awake()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        knockBack = GetComponent<KnockBack>();
+        player_ctrl= GetComponent<Player_Ctrl>();
+    }
 
+    private void Start()
+    {
         rb.bodyType = RigidbodyType2D.Static;
+        animator.SetLayerWeight(0, 0);
+        animator.SetLayerWeight(1, 1);
         animator.SetTrigger("Revive");
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         direction = (transform.position- collision.collider.transform.position).normalized;
-        if (collision.gameObject.tag.Equals("Weapon_Enemy") || collision.gameObject.tag.Equals("Enemy"))
+        if (((1 << collision.gameObject.layer) & enemy) != 0)
         {
-            Player_Hp.TakeDamage();
-            
-            if (Player_Hp.hp == 0)
+            this.player_ctrl.player_TakeDamage.TakeDamage();
+            if(rb.bodyType != RigidbodyType2D.Static)
             {
-                rb.bodyType = RigidbodyType2D.Static;
-                animator.SetTrigger("Die");
-            }
-            else
-            {
-                TakeDamage();
+                TakeKnockBack();
                 StartCoroutine(GetHurt());
             }
-            
         }
     }
 
-    private void TakeDamage()
+    private void TakeKnockBack()
     {
-        knockBack.CallKnockBack(direction, Vector2.up, Input.GetAxisRaw("Horizontal"));
+        this.player_ctrl.knockBack.CallKnockBack(direction, Vector2.up, Input.GetAxisRaw("Horizontal"));
     }
 
     private IEnumerator GetHurt()
     {
         Physics2D.IgnoreLayerCollision(3, 11);
+        Physics2D.IgnoreLayerCollision(3, 15);
         animator.SetLayerWeight(1, 1);
         yield return new WaitForSeconds(3);
         animator.SetLayerWeight(1, 0);
         Physics2D.IgnoreLayerCollision(3, 11,false);
+        Physics2D.IgnoreLayerCollision(3, 15,false);
 
+    }
+
+    public void BeingDead()
+    {
+        rb.bodyType = RigidbodyType2D.Static;
+        animator.SetLayerWeight(1, 1);
+        animator.SetLayerWeight(0, 0);
+        animator.SetTrigger("Die");
     }
 
     private void Dead()
@@ -65,6 +76,8 @@ public class Player_Collider : MonoBehaviour
 
     private void Revive()
     {
+        animator.SetLayerWeight(1, 0);
+        animator.SetLayerWeight(0, 1);
         rb.bodyType = RigidbodyType2D.Dynamic;
     }
 }

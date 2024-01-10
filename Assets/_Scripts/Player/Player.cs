@@ -229,10 +229,17 @@ public class Player : MonoBehaviour
     {
         if (rightCheck == true && move < 0f || rightCheck == false && move > 0f)
         {
+            
             rightCheck = !rightCheck;
 
-            transform.Rotate(0f, 180f, 0f);
-            
+            if (rightCheck == true)
+            {
+                transform.rotation=Quaternion.Euler(0f, 0f, 0f);
+            }
+            else
+            {
+                transform.rotation=Quaternion.Euler(0f,-180f,0f);
+            }
         }
     }
     #endregion

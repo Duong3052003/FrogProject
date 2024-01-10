@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class KnockBack : MonoBehaviour
 {
-    public float knockBackTime = 0.2f;
-    public float direction = 10f;
-    public float constForce = 5f;
-    public float inputForce = 7.5f;
+    private float knockBackTime = 0.2f;
+    private float direction = 5f;
+    private float constForce = 5f;
+    private float inputForce = 7.5f;
 
     public bool IsBeingKnockBack { get; private set; }
 
