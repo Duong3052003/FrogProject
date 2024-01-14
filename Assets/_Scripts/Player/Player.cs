@@ -9,16 +9,17 @@ public class Player : MonoBehaviour
     private float move;
     public static bool rightCheck=true;
     private bool doubleJump;
-    public static bool wallJump=true;
-    public static bool wallSlide=true;
+    public bool wallJump=true;
+    public bool wallSlide=true;
 
     private bool isWallSliding;
     private bool isWallJumping;
 
-    [SerializeField] private float speed = 5f;
-    [SerializeField] public static float jumpPower = 15f;
+    [SerializeField] public float speed = 5f;
+    [SerializeField] public float jumpPower = 15f;
     private float downJumpingDuration = 0.6f;
     private bool canDown;
+    public bool canJump=true;
     private Vector2 Superjump = new Vector2(2f,18f);
 
     [SerializeField] private float wallSlidingSpeed = 1.5f;
@@ -74,7 +75,7 @@ public class Player : MonoBehaviour
     #region Move
     private void Move()
     {
-        if (!isWallJumping && rb.bodyType != RigidbodyType2D.Static)
+        if (!isWallJumping)
         {
             rb.velocity = new Vector2(move * speed, rb.velocity.y);
         }
@@ -94,7 +95,7 @@ public class Player : MonoBehaviour
     #region Jump
     private void Jump()
     {
-        if (Input.GetButtonDown("Jump") )
+        if (Input.GetButtonDown("Jump") && canJump==true)
         {
             groundCheck.tag = "Untagged";
             if (IsGround()!=0)
@@ -108,7 +109,7 @@ public class Player : MonoBehaviour
                 doubleJump = false;
             }
         }
-        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0)
+        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0 && canJump == true)
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
         }

@@ -16,6 +16,13 @@ public class PickUp : MonoBehaviour
     private float Direction;
     private bool grabbing;
 
+    private Player_Ctrl player_Ctrl;
+
+    private void Awake()
+    {
+        player_Ctrl=GetComponent<Player_Ctrl>();
+    }
+
     private void Update()
     {
         RaycastHit2D hit = Physics2D.Raycast(rayPoint.position, transform.right , rayDistance, layerMask);
@@ -61,9 +68,9 @@ public class PickUp : MonoBehaviour
                 grabedOject.GetComponent<Rigidbody2D>().isKinematic = true;
                 grabedOject.transform.position = grabPoint.position;
                 grabedOject.tag = "Attack";
-                Player.jumpPower = 10f;
-                Player.wallJump = false;
-                Player.wallSlide = false;
+                player_Ctrl.Player.jumpPower = 10f;
+                player_Ctrl.Player.wallJump = false;
+                player_Ctrl.Player.wallSlide = false;
             }
         }
 
@@ -73,9 +80,9 @@ public class PickUp : MonoBehaviour
         }
         if (grabbing == false)
         {
-            Player.jumpPower = 15f;
-            Player.wallJump = true;
-            Player.wallSlide = true;
+            player_Ctrl.Player.jumpPower = 15f;
+            player_Ctrl.Player.wallJump = true;
+            player_Ctrl.Player.wallSlide = true;
         }
     
     }

@@ -14,12 +14,11 @@ public class KnockBack : MonoBehaviour
     private Rigidbody2D rb;
 
     private Coroutine knockbackCoroutine;
+
     private void Start()
     {
         rb=GetComponent<Rigidbody2D>();    
     }
-
-        
 
     public IEnumerator KnockBackAction(Vector2 hitDirection, Vector2 constantForceDirection, float inputDirection)
     {

@@ -15,6 +15,7 @@ public class Player_TakeDamage : Player_Hp
     {
         player_Ctrl = GetComponent<Player_Ctrl>();
         hp = 3;
+        
     }
 
     void Update()
@@ -25,7 +26,10 @@ public class Player_TakeDamage : Player_Hp
         }
         for (int i = 0; i < hp; i++)
         {
-            hearts[i].sprite = heart;
+            if (hearts[i] != null)
+            {
+                hearts[i].sprite = heart;
+            }
         }
     }
 

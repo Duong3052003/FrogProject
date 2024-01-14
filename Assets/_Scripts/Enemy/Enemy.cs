@@ -7,15 +7,15 @@ using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] protected float speed = 5f;
+    [SerializeField] private float speed = 5f;
 
     [SerializeField] private Vector2 knockBack;
 
-    [SerializeField] protected GameObject PointA;
-    [SerializeField] protected GameObject PointB;
+    [SerializeField] private GameObject PointA;
+    [SerializeField] private GameObject PointB;
 
-    [SerializeField] protected float distancePointA;
-    [SerializeField] protected float distancePointB;
+    [SerializeField] private float distancePointA;
+    [SerializeField] private float distancePointB;
 
     [SerializeField] private GameObject Enemy_top;
     [SerializeField] private Transform RayCastPoint;
@@ -135,22 +135,14 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.tag.Equals("Attack") && collision.gameObject.layer==3)
         {
-            Enemy_top.SetActive(false);
-            canMove = false;
-            rb.bodyType = RigidbodyType2D.Static;
-            Collider.enabled = false;
-            animator.SetTrigger("Death");
+            BeingDead();
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag.Equals("Attack"))
         {
-            Enemy_top.SetActive(false);
-            canMove = false;
-            rb.bodyType = RigidbodyType2D.Static;
-            Collider.enabled = false;
-            animator.SetTrigger("Death");
+            BeingDead();
         }
     }
 
@@ -216,6 +208,16 @@ public class Enemy : MonoBehaviour
     {
         transform.Rotate(0, 180, 0);
     }
+
+    private void BeingDead()
+    {
+        Enemy_top.SetActive(false);
+        canMove = false;
+        rb.bodyType = RigidbodyType2D.Static;
+        Collider.enabled = false;
+        animator.SetTrigger("Death");
+    }
+
     private void Dead()
     {
         gameObject.SetActive(false);
