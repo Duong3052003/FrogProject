@@ -5,7 +5,6 @@ using UnityEngine;
 public class Box : MonoBehaviour
 {
     [SerializeField] private GameObject Box_Break;
-    [SerializeField] private GameObject groundCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask enemyLayer;
     private Animator Animator;
