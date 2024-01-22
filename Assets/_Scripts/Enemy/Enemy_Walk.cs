@@ -38,8 +38,6 @@ public class Enemy_Walk : Enemy
         Debug.DrawRay(transform.position, transform.right * rayDistance * -1, Color.red);
         returnNow();
 
-        Debug.Log(current_Point);
-
         if (hit.collider != null)
         {
             if (hit.collider.gameObject.layer==3)
@@ -66,6 +64,7 @@ public class Enemy_Walk : Enemy
 
     private void FixedUpdate()
     {
+        animator.SetBool("CanMove", canMove);
         if (canMove == true)
         {
             Move();
@@ -184,7 +183,6 @@ public class Enemy_Walk : Enemy
             }
 
         }
-        animator.SetFloat("xVelocity", speed);
     }
     private void Flip()
     {
@@ -215,11 +213,11 @@ public class Enemy_Walk : Enemy
     }
     private void BeingDead()
     {
-        rb.bodyType = RigidbodyType2D.Static;
-        Enemy_top.SetActive(false);
         canMove = false;
+        Enemy_top.SetActive(false);
         Collider.enabled = false;
         animator.SetTrigger("Death");
+        rb.bodyType = RigidbodyType2D.Static;
     }
     private void Dead()
     {

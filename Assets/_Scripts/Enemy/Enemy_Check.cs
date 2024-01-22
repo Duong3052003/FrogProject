@@ -6,12 +6,6 @@ public class Enemy_Check : MonoBehaviour
 {
     public static bool returnNow;
 
-    private void Update()
-    {
-        Debug.Log(returnNow);
-
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.layer == 14)
@@ -21,7 +15,7 @@ public class Enemy_Check : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if(collision.gameObject.layer == 6 || collision.gameObject.layer == 8)
+        if(collision.gameObject.layer == 6)
         {
             returnNow=true;
         }

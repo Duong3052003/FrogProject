@@ -25,18 +25,18 @@ public class Player : MonoBehaviour
     [SerializeField] private float wallSlidingSpeed = 1.5f;
     private float wallJumpingTime=0.2f;
     private float wallJumpingCounter;
-    private float wallJumpingDuration=0.4f;
+    private float wallJumpingDuration=0.5f;
     private Vector2 wallJumpingPower = new Vector2(10f,17f);
 
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask supergroundLayer;
-    [SerializeField] private LayerMask wallLayer;
 
     [SerializeField] private Transform wallCheck;
     [SerializeField] private GameObject groundCheck;
 
     private Animator animator;
     private Rigidbody2D rb;
+    [SerializeField] private AudioSource jumpSoundEffect;
     private KnockBack knockBack;
 
     private void Start()
@@ -102,11 +102,13 @@ public class Player : MonoBehaviour
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpPower);
                 doubleJump = true;
+                jumpSoundEffect.Play();
             }
             else if(doubleJump == true)
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpPower * 0.8f);
                 doubleJump = false;
+                jumpSoundEffect.Play();
             }
         }
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0 && canJump == true)
@@ -133,7 +135,8 @@ public class Player : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && wallJumpingCounter >0f && isWallSliding && wallJump == true)
         {
-            isWallJumping =true;
+            jumpSoundEffect.Play();
+            isWallJumping = true;
             rb.velocity = new Vector2(-move *wallJumpingPower.x, wallJumpingPower.y);
             wallJumpingCounter = 0f;
             rightCheck = !rightCheck;
@@ -176,8 +179,9 @@ public class Player : MonoBehaviour
             if (!groundCheck.tag.Equals("Attack"))
             {
                 rb.velocity = new Vector2(Superjump.x, Superjump.y);
+                jumpSoundEffect.Play();
             }
-                
+
         }
         if (IsGround() == 0)
         {
@@ -206,7 +210,7 @@ public class Player : MonoBehaviour
     }
     private bool IsWall()
     {
-        return Physics2D.OverlapCircle(wallCheck.position, 0.2f, wallLayer);
+        return Physics2D.OverlapCircle(wallCheck.position, 0.2f, groundLayer);
     }
     private int IsGround()
     {

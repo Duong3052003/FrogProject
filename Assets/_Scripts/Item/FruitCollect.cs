@@ -10,6 +10,7 @@ public class FruifCollect : MonoBehaviour
     public static FruifCollect Instance => instance;
 
     [SerializeField] private TextMeshProUGUI text;
+    [SerializeField] private AudioSource collectSoundEffect;
 
     private int point_total = 0;
 
@@ -26,6 +27,7 @@ public class FruifCollect : MonoBehaviour
 
     public void Collect(int point)
     {
+        collectSoundEffect.Play();
         point_total = point_total+ point;
         text.text= "Point: " + point_total;
     }

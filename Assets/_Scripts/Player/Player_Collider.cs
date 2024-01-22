@@ -13,12 +13,15 @@ public class Player_Collider : MonoBehaviour
     [SerializeField] private LayerMask enemy;
 
     private Player_Ctrl player_ctrl;
+    private UIManager uiManager;
+    [SerializeField] private AudioSource dieSoundEffect;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         player_ctrl= GetComponent<Player_Ctrl>();
+        uiManager=FindAnyObjectByType<UIManager>();
     }
 
     private void Start()
@@ -68,12 +71,14 @@ public class Player_Collider : MonoBehaviour
         animator.SetLayerWeight(1, 1);
         animator.SetLayerWeight(0, 0);
         animator.SetTrigger("Die");
+        dieSoundEffect.Play();
+
     }
 
     private void Dead()
     {
         Destroy(gameObject);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        uiManager.GameOver();
     }
 
     private void Revive()
