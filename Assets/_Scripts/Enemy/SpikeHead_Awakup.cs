@@ -6,7 +6,7 @@ using UnityEngine;
 public class SpikeHead_Awakup : MonoBehaviour
 {
     [SerializeField] private LayerMask layerCheck;
-    private SpikeHead SpikeHead;
+    [SerializeField] private GameObject spikeHead;
     public static Transform Player;
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -18,9 +18,9 @@ public class SpikeHead_Awakup : MonoBehaviour
                 Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
                 if (rb.velocity.x > 5.5f || rb.velocity.y > 2f)
                 {
-                    SpikeHead.isAwakup = true;
+                    spikeHead.GetComponent<SpikeHead>().isAwakup = true;
                 }
-                if (collision.gameObject.CompareTag("Player") && SpikeHead.isAwakup == true)
+                if (collision.gameObject.CompareTag("Player") && spikeHead.GetComponent<SpikeHead>().isAwakup == true)
                 {
                     Player = collision.transform;
                 }
@@ -30,9 +30,9 @@ public class SpikeHead_Awakup : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player") && SpikeHead.isAwakup == true)
+        if (collision.gameObject.CompareTag("Player") && spikeHead.GetComponent<SpikeHead>().isAwakup == true)
         {
-            SpikeHead.isAwakup = false;
+            spikeHead.GetComponent<SpikeHead>().isAwakup = false;
         }
     }
 }

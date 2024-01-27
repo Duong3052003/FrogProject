@@ -14,7 +14,7 @@ public class SpikeHead : Enemy
     public static Transform currentTarget;
 
     [SerializeField] private float speed;
-    public static bool isAwakup;
+    public bool isAwakup;
     private bool isChasing=true;
 
     private Vector3 direction;

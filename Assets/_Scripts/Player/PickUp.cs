@@ -12,7 +12,7 @@ public class PickUp : MonoBehaviour
     [SerializeField] LayerMask layerMask;
 
     private GameObject grabedOject;
-    private float forceThrow=15f;
+    private float forceThrow=22f;
     private float Direction;
     private bool grabbing;
 
@@ -49,7 +49,7 @@ public class PickUp : MonoBehaviour
                     }
                     else Direction = -1;
                     grabedOject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-                    grabedOject.GetComponent<Rigidbody2D>().velocity = new Vector2(Direction, 0.25f) * forceThrow;
+                    grabedOject.GetComponent<Rigidbody2D>().velocity = new Vector2(Direction, 0.3f) * forceThrow;
                     grabedOject = null;
                 }
                 if (Input.GetKeyDown(KeyCode.J))

@@ -11,6 +11,16 @@ public class Platform : Auto_Move
 
     private Vector2 forcePush;
 
+    public bool canMove= true;
+
+    private void Update()
+    {
+        if (canMove==true)
+        {
+            Move();
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (((1 << collision.gameObject.layer) & CanStand) != 0)
@@ -21,15 +31,6 @@ public class Platform : Auto_Move
         {
             collision.transform.SetParent(this.transform);
             rigidbodyPlayer = collision.GetComponent<Rigidbody2D>();
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            forcePush = new Vector2(rigidbodyPlayer.velocity.x + 10f, rigidbodyPlayer.velocity.y + 10f);
-            rigidbodyPlayer.AddForce(forcePush);
         }
     }
 

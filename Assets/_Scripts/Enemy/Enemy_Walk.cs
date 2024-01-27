@@ -26,6 +26,7 @@ public class Enemy_Walk : Enemy
 
     private Transform current_Point;
     private bool canMove = true;
+    [SerializeField] private bool canReponse;
 
     private void Start()
     {
@@ -221,8 +222,15 @@ public class Enemy_Walk : Enemy
     }
     private void Dead()
     {
-        gameObject.SetActive(false);
-        SetActiveEnemy();
+        if (canReponse == true)
+        {
+            gameObject.SetActive(false);
+            SetActiveEnemy();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
 }

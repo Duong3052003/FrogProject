@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(1, LoadSceneMode.Additive);
     }
     public void MainMenu()
     {
@@ -28,9 +29,9 @@ public class UIManager : MonoBehaviour
         Application.Quit();
         UnityEditor.EditorApplication.isPlaying=false;
     }
-    public void SelectLevel()
+    public void SelectLevel(int level)
     {
-
+        SceneManager.LoadScene($"_Scenes/Level_{level}");
     }
     public void Shop()
     {

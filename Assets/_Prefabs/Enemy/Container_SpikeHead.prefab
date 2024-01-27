@@ -83,6 +83,7 @@ MonoBehaviour:
   layerCheck:
     serializedVersion: 2
     m_Bits: 18440
+  spikeHead: {fileID: 6274286563353349404}
 --- !u!1 &2480347871209803944
 GameObject:
   m_ObjectHideFlags: 0
@@ -5152,3 +5153,4 @@ MonoBehaviour:
     m_Bits: 65984
   particleDead: {fileID: 1125564358283006361}
   speed: 10
+  isAwakup: 0

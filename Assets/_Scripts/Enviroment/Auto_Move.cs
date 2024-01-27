@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Auto_Move : MonoBehaviour
 {
@@ -18,19 +19,6 @@ public class Auto_Move : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    void Update()
-    {
-        Vector2 target = currentTarget();
-
-        transform.position = Vector2.Lerp(transform.position, target, speed*Time.deltaTime);
-        float distance = (target-(Vector2)transform.position).magnitude;
-
-        if(distance <= 0.1f)
-        {
-            direction *= -1;
-        }
-    }
-
     Vector2 currentTarget()
     {
         if (direction == 1)
@@ -40,6 +28,18 @@ public class Auto_Move : MonoBehaviour
         else
         {
             return PointB.transform.position;
+        }
+    }
+
+    protected void Move()
+    {
+        Vector2 target = currentTarget();
+
+        transform.position = Vector2.Lerp(transform.position, target, speed * Time.deltaTime);
+        float distance = (target - (Vector2)transform.position).magnitude;
+        if (distance <= 0.1f)
+        {
+            direction *= -1;
         }
     }
 
