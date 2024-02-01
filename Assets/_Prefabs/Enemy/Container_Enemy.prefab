@@ -201,7 +201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layerCanHurting:
     serializedVersion: 2
-    m_Bits: 98304
+    m_Bits: 229376
   speed: 5
   PointA: {fileID: 3768378763094795904}
   PointB: {fileID: 5300790446779289415}
@@ -1067,3 +1067,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 297feb87043adff47a1b76976123f90e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  returnNow: 0
