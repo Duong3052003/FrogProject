@@ -14,7 +14,7 @@ public class PickUp : MonoBehaviour
     private GameObject grabedOject;
     private float forceThrow=22f;
     private float Direction;
-    private bool grabbing;
+    public bool grabbing { get; private set; }
 
     private Player_Ctrl player_Ctrl;
 

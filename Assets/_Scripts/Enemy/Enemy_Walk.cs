@@ -26,7 +26,14 @@ public class Enemy_Walk : Enemy
 
     private Transform current_Point;
     private bool canMove = true;
-    [SerializeField] private bool canReponse;
+    
+    private Enemy_Check enemy_check;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        enemy_check = GetComponentInChildren<Enemy_Check>();
+    }
 
     private void Start()
     {
@@ -109,9 +116,9 @@ public class Enemy_Walk : Enemy
         {
             current_Point = PointB.transform;
         }
-        if (Enemy_Check.returnNow == true)
+        if (enemy_check.returnNow == true)
         {
-            Enemy_Check.returnNow = false;
+            enemy_check.returnNow = false;
         }
     }
 
@@ -132,7 +139,7 @@ public class Enemy_Walk : Enemy
 
     private void returnNow()
     {
-        if (Enemy_Check.returnNow == true)
+        if (enemy_check.returnNow == true)
         {
             ResetPoint();
         }
@@ -222,15 +229,8 @@ public class Enemy_Walk : Enemy
     }
     private void Dead()
     {
-        if (canReponse == true)
-        {
-            gameObject.SetActive(false);
-            SetActiveEnemy();
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        gameObject.SetActive(false);
+        SetActiveEnemy();
     }
 
 }

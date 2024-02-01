@@ -1,19 +1,20 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform player;
-    private Vector3 Camera;
+    private CinemachineVirtualCamera cnm;
 
+    private void Awake()
+    {
+        cnm.GetComponent<CinemachineVirtualCamera>();
+    }
 
     void LateUpdate()
     {
-        if(player != null)
-        {
-            transform.position = new Vector3(player.position.x, player.position.y, -10);
-
-        }
+        cnm.m_Lens.OrthographicSize = 10;   
     }
 }

@@ -15,8 +15,8 @@ public class Player : MonoBehaviour
     private bool isWallSliding;
     private bool isWallJumping;
 
-    [SerializeField] public float speed = 5f;
-    [SerializeField] public float jumpPower = 15f;
+    public float speed = 5f;
+    public float jumpPower = 15f;
     private float downJumpingDuration = 0.6f;
     private bool canDown;
     public bool canJump=true;
@@ -46,7 +46,6 @@ public class Player : MonoBehaviour
         knockBack =GetComponent<KnockBack>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!knockBack.IsBeingKnockBack && rb.bodyType != RigidbodyType2D.Static)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy_Check : MonoBehaviour
 {
-    public static bool returnNow;
+    public bool returnNow;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

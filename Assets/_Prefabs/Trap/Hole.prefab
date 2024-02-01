@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 5875731217177547744}
   - component: {fileID: 4727082893245795252}
   - component: {fileID: 2622084718800738007}
-  m_Layer: 15
+  m_Layer: 17
   m_Name: Hole
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,7 +78,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   response: {fileID: 3467609888164899752}
-  onlyPlayer: 1
 --- !u!61 &2622084718800738007
 BoxCollider2D:
   m_ObjectHideFlags: 0

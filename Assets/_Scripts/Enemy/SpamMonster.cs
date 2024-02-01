@@ -6,6 +6,7 @@ public class SpamMonster : MonoBehaviour
 {
     [SerializeField] private GameObject enemy;
     private float time_revive=10f;
+    [SerializeField] private bool canReponse;
 
     void Update()
     {
@@ -16,7 +17,14 @@ public class SpamMonster : MonoBehaviour
     {
         if (enemy.gameObject.activeSelf== false)
         {
-            Invoke(nameof(Spam), time_revive);
+            if (canReponse == true)
+            {
+                Invoke(nameof(Spam), time_revive);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
         else
         {

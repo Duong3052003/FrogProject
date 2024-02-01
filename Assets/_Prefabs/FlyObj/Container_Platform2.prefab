@@ -315,7 +315,7 @@ GameObject:
   - component: {fileID: 6173220822430045042}
   m_Layer: 0
   m_Name: Button
-  m_TagString: Untagged
+  m_TagString: Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -496,7 +496,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.5}
+  m_Size: {x: 0.65, y: 0.5}
   m_EdgeRadius: 0
 --- !u!50 &6343839246407412670
 Rigidbody2D:
@@ -538,6 +538,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Platform: {fileID: 1973275006836907572}
+  LayerCanTrigger:
+    serializedVersion: 2
+    m_Bits: 83976
 --- !u!1 &3631186688393440807
 GameObject:
   m_ObjectHideFlags: 0

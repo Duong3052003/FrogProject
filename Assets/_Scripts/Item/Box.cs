@@ -35,6 +35,17 @@ public class Box : MonoBehaviour
             TakeDamaged();
         }
     }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Button"))
+        {
+            StopAllCoroutines();
+            gameObject.tag = "Box";
+            rb.bodyType = RigidbodyType2D.Dynamic;
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (((1 << collision.gameObject.layer) & enemyLayer) != 0)
@@ -46,6 +57,11 @@ public class Box : MonoBehaviour
             hitedSoundEffect.Play();
             StartCoroutine(tagBox());
         }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        StopAllCoroutines();
     }
 
     private IEnumerator tagBox()

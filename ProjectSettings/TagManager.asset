@@ -13,6 +13,7 @@ TagManager:
   - Box
   - Attack
   - Enemy_top
+  - Button
   layers:
   - Default
   - TransparentFX
@@ -31,7 +32,7 @@ TagManager:
   - CanStand-Grab
   - Trap
   - Enemy_Fly
-  - 
+  - Hole
   - 
   - 
   - 

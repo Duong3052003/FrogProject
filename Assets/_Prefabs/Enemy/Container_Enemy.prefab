@@ -107,9 +107,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 10
-  m_LinearDrag: 4
+  m_LinearDrag: 5
   m_AngularDrag: 1
-  m_GravityScale: 1
+  m_GravityScale: 2.5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -209,7 +209,7 @@ MonoBehaviour:
   distancePointB: 3
   Enemy_top: {fileID: 7875033308754815045}
   RayCastPoint: {fileID: 1854648812045599512}
-  rayDistance: 7
+  rayDistance: 6
   targetLayer:
     serializedVersion: 2
     m_Bits: 16392
@@ -537,6 +537,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 1169303536622768285}
+  canReponse: 0
 --- !u!1 &4322655139342653268
 GameObject:
   m_ObjectHideFlags: 0

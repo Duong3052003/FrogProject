@@ -5,14 +5,16 @@ using UnityEngine;
 public class ButtonPlatform : MonoBehaviour
 {
     [SerializeField] private GameObject Platform;
+    [SerializeField] private LayerMask LayerCanTrigger;
 
     private Animator animator;
 
     private bool trigger;
+    private int onCollider=0;
 
     private void Start()
     {
-        Platform.GetComponent<Platform>().canMove = !Platform.GetComponent<Platform>().canMove;
+        Platform.GetComponent<Platform>().canMove = false;
     }
 
     private void Awake()
@@ -22,7 +24,15 @@ public class ButtonPlatform : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer != 6)
+        if(((1 << collision.gameObject.layer) & LayerCanTrigger) != 0)
+        {
+            onCollider += 1;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (((1 << collision.gameObject.layer) & LayerCanTrigger) != 0 && Platform.GetComponent<Platform>().canMove == false)
         {
             trigger = true;
             animator.SetBool("Trigger", trigger);
@@ -31,12 +41,25 @@ public class ButtonPlatform : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        trigger = false;
-        animator.SetBool("Trigger", trigger);
+        if (((1 << collision.gameObject.layer) & LayerCanTrigger) != 0)
+        {
+            onCollider -= 1;
+        }
+        
+        if (onCollider <=0)
+        {
+            trigger=false;
+            animator.SetBool("Trigger", trigger);
+        }
     }
 
     private void Trigger()
     {
-        Platform.GetComponent<Platform>().canMove = !Platform.GetComponent<Platform>().canMove;
+        Platform.GetComponent<Platform>().canMove = true;
+    }
+
+    private void CancelTrigger()
+    {
+        Platform.GetComponent<Platform>().canMove = false;
     }
 }
