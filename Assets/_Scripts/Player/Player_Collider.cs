@@ -9,6 +9,7 @@ public class Player_Collider : MonoBehaviour
     private Rigidbody2D rb;
 
     private Vector2 direction;
+    private bool isWin;
 
     [SerializeField] private LayerMask layerCollider;
 
@@ -22,6 +23,7 @@ public class Player_Collider : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         player_ctrl= GetComponent<Player_Ctrl>();
         uiManager=FindAnyObjectByType<UIManager>();
+        isWin = false;
     }
 
     private void Start()
@@ -43,6 +45,14 @@ public class Player_Collider : MonoBehaviour
                 TakeKnockBack();
                 StartCoroutine(GetHurt());
             }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Finish"))
+        {
+            Win();
         }
     }
 
@@ -72,13 +82,20 @@ public class Player_Collider : MonoBehaviour
         animator.SetLayerWeight(0, 0);
         animator.SetTrigger("Die");
         dieSoundEffect.Play();
-
     }
 
     private void Dead()
     {
         Destroy(gameObject);
-        uiManager.GameOver();
+        if (isWin == true)
+        {
+            uiManager.Win();
+        }
+        else
+        {
+            uiManager.GameOver();
+        }
+        
     }
 
     private void Revive()
@@ -86,5 +103,11 @@ public class Player_Collider : MonoBehaviour
         animator.SetLayerWeight(1, 0);
         animator.SetLayerWeight(0, 1);
         rb.bodyType = RigidbodyType2D.Dynamic;
+    }
+
+    private void Win()
+    {
+        BeingDead();
+        isWin = true;
     }
 }

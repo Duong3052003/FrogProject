@@ -29,6 +29,8 @@ public class Enemy_Walk : Enemy
     
     private Enemy_Check enemy_check;
 
+    [SerializeField] private AudioSource audioSource;
+
     protected override void Awake()
     {
         base.Awake();
@@ -222,10 +224,11 @@ public class Enemy_Walk : Enemy
     private void BeingDead()
     {
         canMove = false;
+        audioSource.Play();
         Enemy_top.SetActive(false);
         Collider.enabled = false;
         animator.SetTrigger("Death");
-        rb.bodyType = RigidbodyType2D.Static;
+        rb.bodyType = RigidbodyType2D.Kinematic;
     }
     private void Dead()
     {
