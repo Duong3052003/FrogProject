@@ -10,14 +10,22 @@ public class FruifCollect : MonoBehaviour
     public static FruifCollect Instance => instance;
 
     [SerializeField] private TextMeshProUGUI text;
-    [SerializeField] private AudioSource collectSoundEffect;
+    [SerializeField] private AudioClip collectSoundEffect;
 
     private int point_total = 0;
 
     private void Awake()
     {
-        if (instance != null) Debug.LogError("1 FruifCollect thoi");
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else if(instance != null && instance != this)
+        {
+            Destroy(gameObject);
+        }
+
     }
 
     private void Start()
@@ -27,7 +35,7 @@ public class FruifCollect : MonoBehaviour
 
     public void Collect(int point)
     {
-        collectSoundEffect.Play();
+        SoundManager.Instance.PlaySound(collectSoundEffect);
         point_total = point_total+ point;
         text.text= "Point: " + point_total;
     }

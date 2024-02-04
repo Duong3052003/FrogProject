@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject GameOverScreen;
     [SerializeField] private GameObject Finish;
     [SerializeField] private GameObject PauseScreen;
+    [SerializeField] private GameObject SettingScreen;
 
     private void Awake()
     {
@@ -21,6 +22,10 @@ public class UIManager : MonoBehaviour
             if (PauseScreen.activeInHierarchy)
             {
                 PauseGame(false);
+                if (SettingScreen.activeInHierarchy)
+                {
+                    SettingScreen.SetActive(false);
+                }
             }
             else
             {
@@ -90,5 +95,29 @@ public class UIManager : MonoBehaviour
         }
 
         PauseScreen.SetActive(status);
+    }
+
+    public void Setting()
+    {
+        if (PauseScreen.activeInHierarchy)
+        {
+            SettingScreen.SetActive(true);
+            PauseScreen.SetActive(false);
+        }else if (SettingScreen.activeInHierarchy)
+        {
+            PauseScreen.SetActive(true);
+            SettingScreen.SetActive(false);
+        }
+        
+    }
+
+    public void SoundVolume()
+    {
+        SoundManager.Instance.ChangedSound(0.2f);
+    }
+
+    public void MusicVolume()
+    {
+        SoundManager.Instance.ChangedMusic(0.2f);
     }
 }

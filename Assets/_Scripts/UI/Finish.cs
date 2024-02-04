@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class Finish : MonoBehaviour
 {
-    private AudioSource audioSource;
+    private AudioClip audioClip;
     private Animator animator;
 
     private void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
     }
 
@@ -17,7 +16,7 @@ public class Finish : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            audioSource.Play();
+            SoundManager.Instance.PlaySound(audioClip);
             animator.SetTrigger("Finish");
         }
     }

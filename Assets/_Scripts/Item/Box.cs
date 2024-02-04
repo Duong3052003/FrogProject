@@ -7,7 +7,7 @@ public class Box : MonoBehaviour
     [SerializeField] private GameObject Box_Break;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask enemyLayer;
-    [SerializeField] private AudioSource hitedSoundEffect;
+    [SerializeField] private AudioClip hitedSoundEffect;
     private Rigidbody2D rb;
 
     private Animator Animator;
@@ -54,14 +54,29 @@ public class Box : MonoBehaviour
         }
         if (((1 << collision.gameObject.layer) & groundLayer) != 0)
         {
-            hitedSoundEffect.Play();
+            SoundManager.Instance.PlaySound(hitedSoundEffect);
             StartCoroutine(tagBox());
+        }
+        
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if ((collision.gameObject.layer == 14 && collision.gameObject.layer == 3) && rb.bodyType == RigidbodyType2D.Static)
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            StopAllCoroutines();
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
         StopAllCoroutines();
+
+        if ((collision.gameObject.layer == 14 && collision.gameObject.layer == 3) && rb.bodyType == RigidbodyType2D.Dynamic)
+        {
+            StartCoroutine(tagBox());
+        }
     }
 
     private IEnumerator tagBox()
@@ -81,7 +96,7 @@ public class Box : MonoBehaviour
         }
         else
         {
-            hitedSoundEffect.Play();
+            SoundManager.Instance.PlaySound(hitedSoundEffect);
             Animator.SetTrigger("Hited");
         }
     }

@@ -8,6 +8,7 @@ public class PickUp : MonoBehaviour
 {
     [SerializeField] private Transform grabPoint;
     [SerializeField] private Transform rayPoint;
+    [SerializeField] private GameObject CloneBox;
     [SerializeField] private float rayDistance;
     [SerializeField] LayerMask layerMask;
 
@@ -41,6 +42,7 @@ public class PickUp : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.K))
                 {
+                    Physics2D.IgnoreCollision(CloneBox.GetComponent<BoxCollider2D>(), grabedOject.GetComponent<BoxCollider2D>(),false);
                     grabedOject.transform.parent = null;
                     grabbing = false;
                     if (Player.rightCheck == true)
@@ -54,6 +56,7 @@ public class PickUp : MonoBehaviour
                 }
                 if (Input.GetKeyDown(KeyCode.J))
                 {
+                    Physics2D.IgnoreCollision(CloneBox.GetComponent<BoxCollider2D>(), grabedOject.GetComponent<BoxCollider2D>(), false);
                     grabedOject.transform.parent = null;
                     grabedOject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
                     grabbing = false;
@@ -61,10 +64,12 @@ public class PickUp : MonoBehaviour
                 }
             }
         }
-        if(grabPoint.childCount > 0)
+        if(grabPoint.childCount > 1)
         {
             if (grabbing == true)
             {
+                Physics2D.IgnoreCollision(CloneBox.GetComponent<BoxCollider2D>(), grabedOject.GetComponent<BoxCollider2D>());
+                CloneBox.GetComponent<BoxCollider2D>().isTrigger = false;
                 grabedOject.GetComponent<Rigidbody2D>().isKinematic = true;
                 grabedOject.transform.position = grabPoint.position;
                 grabedOject.tag = "Attack";
@@ -78,8 +83,10 @@ public class PickUp : MonoBehaviour
         {
            grabbing=false;
         }
+
         if (grabbing == false)
         {
+            CloneBox.GetComponent<BoxCollider2D>().isTrigger = true;
             player_Ctrl.Player.jumpPower = 15f;
             player_Ctrl.Player.wallJump = true;
             player_Ctrl.Player.wallSlide = true;

@@ -32,23 +32,25 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask supergroundLayer;
 
     [SerializeField] private Transform wallCheck;
+    [SerializeField] private Transform behindCheck;
     [SerializeField] private GameObject groundCheck;
 
     private Animator animator;
     private Rigidbody2D rb;
-    [SerializeField] private AudioSource jumpSoundEffect;
-    private KnockBack knockBack;
+    [SerializeField] private AudioClip jumpSoundEffect;
 
-    private void Start()
+    private Player_Ctrl player_Ctrl;
+
+    private void Awake()
     {
+        player_Ctrl = GetComponent<Player_Ctrl>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        knockBack =GetComponent<KnockBack>();
     }
 
     void Update()
     {
-        if (!knockBack.IsBeingKnockBack && rb.bodyType != RigidbodyType2D.Static)
+        if (!player_Ctrl.knockBack.IsBeingKnockBack && rb.bodyType != RigidbodyType2D.Static)
         {
             move = Input.GetAxisRaw("Horizontal");
             animator.SetFloat("xVelocity", Mathf.Abs(move));
@@ -65,7 +67,7 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (!knockBack.IsBeingKnockBack && rb.bodyType != RigidbodyType2D.Static)
+        if (!player_Ctrl.knockBack.IsBeingKnockBack && rb.bodyType != RigidbodyType2D.Static)
         {
             Move();
         }
@@ -101,13 +103,13 @@ public class Player : MonoBehaviour
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpPower);
                 doubleJump = true;
-                jumpSoundEffect.Play();
+                SoundManager.Instance.PlaySound(jumpSoundEffect);
             }
             else if(doubleJump == true)
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpPower * 0.8f);
                 doubleJump = false;
-                jumpSoundEffect.Play();
+                SoundManager.Instance.PlaySound(jumpSoundEffect);
             }
         }
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0 && canJump == true)
@@ -133,7 +135,7 @@ public class Player : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && wallJumpingCounter >0f && isWallSliding && wallJump == true)
         {
-            jumpSoundEffect.Play();
+            SoundManager.Instance.PlaySound(jumpSoundEffect);
             isWallJumping = true;
             rb.velocity = new Vector2(-move *wallJumpingPower.x, wallJumpingPower.y);
             wallJumpingCounter = 0f;
@@ -177,7 +179,7 @@ public class Player : MonoBehaviour
             if (!groundCheck.tag.Equals("Attack"))
             {
                 rb.velocity = new Vector2(Superjump.x, Superjump.y);
-                jumpSoundEffect.Play();
+                SoundManager.Instance.PlaySound(jumpSoundEffect);
             }
 
         }
@@ -225,14 +227,22 @@ public class Player : MonoBehaviour
             return 0;
         }
     }
+    private bool CanReturn()
+    {
+        if(player_Ctrl.PickUp.grabbing == true)
+        {
+            return Physics2D.OverlapCircle(behindCheck.position, 0.5f, groundLayer);
+        }
+        return false;
+    }
+
     #endregion
 
     #region Flip
     private void Flip()
     {
-        if (rightCheck == true && move < 0f || rightCheck == false && move > 0f)
-        {
-            
+        if ((rightCheck == true && move < 0f || rightCheck == false && move > 0f) && !CanReturn())
+        { 
             rightCheck = !rightCheck;
 
             if (rightCheck == true)

@@ -29,7 +29,7 @@ public class Enemy_Walk : Enemy
     
     private Enemy_Check enemy_check;
 
-    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip audioClip;
 
     protected override void Awake()
     {
@@ -219,12 +219,17 @@ public class Enemy_Walk : Enemy
         rb.bodyType = RigidbodyType2D.Dynamic;
         Enemy_top.SetActive(true);
         canMove = true;
+        transform.localPosition = Vector3.zero;
         Collider.enabled = true;
+        PointA.SetActive(true);
+        PointB.SetActive(true);
     }
     private void BeingDead()
     {
         canMove = false;
-        audioSource.Play();
+        PointA.SetActive(false);
+        PointB.SetActive(false);
+        SoundManager.Instance.PlaySound(audioClip);
         Enemy_top.SetActive(false);
         Collider.enabled = false;
         animator.SetTrigger("Death");

@@ -10,8 +10,8 @@ public class SelectedArrow : MonoBehaviour
     private RectTransform rectTransform;
     private int currentOptionIndex;
 
-    [SerializeField] private AudioSource changedSourceEffect;
-    [SerializeField] private AudioSource selectedSourceEffect;
+    [SerializeField] private AudioClip changedSourceEffect;
+    [SerializeField] private AudioClip selectedSourceEffect;
     private Animator animator;
 
     private void Awake()
@@ -39,7 +39,7 @@ public class SelectedArrow : MonoBehaviour
     private void ChangeOption(int _change)
     {
         currentOptionIndex += _change;
-        changedSourceEffect.Play();
+        SoundManager.Instance.PlaySound(changedSourceEffect);
 
         if (currentOptionIndex < 0)
         {
@@ -55,7 +55,8 @@ public class SelectedArrow : MonoBehaviour
     private void Interact()
     {
         animator.SetTrigger("Interacted");
-        selectedSourceEffect.Play();
+
+        SoundManager.Instance.PlaySound(selectedSourceEffect);
     }
     private void Interacted()
     {

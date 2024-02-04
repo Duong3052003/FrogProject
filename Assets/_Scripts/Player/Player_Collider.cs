@@ -15,7 +15,7 @@ public class Player_Collider : MonoBehaviour
 
     private Player_Ctrl player_ctrl;
     private UIManager uiManager;
-    [SerializeField] private AudioSource dieSoundEffect;
+    [SerializeField] private AudioClip dieSoundEffect;
 
     private void Awake()
     {
@@ -81,7 +81,7 @@ public class Player_Collider : MonoBehaviour
         animator.SetLayerWeight(1, 1);
         animator.SetLayerWeight(0, 0);
         animator.SetTrigger("Die");
-        dieSoundEffect.Play();
+        SoundManager.Instance.PlaySound(dieSoundEffect);
     }
 
     private void Dead()
