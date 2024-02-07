@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class ButtonPlatform : MonoBehaviour
 {
     [SerializeField] private GameObject Platform;
     [SerializeField] private LayerMask LayerCanTrigger;
+    [SerializeField] private GameObject MapTrigger;
 
     private Animator animator;
 
+    [SerializeField] private bool Button;
     private bool trigger;
     private int onCollider=0;
 
@@ -24,42 +27,81 @@ public class ButtonPlatform : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(((1 << collision.gameObject.layer) & LayerCanTrigger) != 0)
+        if (Button == true)
         {
-            onCollider += 1;
+            if (((1 << collision.gameObject.layer) & LayerCanTrigger) != 0)
+            {
+                onCollider += 1;
+            }
         }
+        
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (((1 << collision.gameObject.layer) & LayerCanTrigger) != 0 && Platform.GetComponent<Platform>().canMove == false)
+        if(Button == true)
         {
-            trigger = true;
-            animator.SetBool("Trigger", trigger);
+            if (((1 << collision.gameObject.layer) & LayerCanTrigger) != 0 && Platform.GetComponent<Platform>().canMove == false)
+            {
+                trigger = true;
+                animator.SetBool("Trigger", trigger);
+            }
         }
+        
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (((1 << collision.gameObject.layer) & LayerCanTrigger) != 0)
+        if (Button == true)
         {
-            onCollider -= 1;
+            if (((1 << collision.gameObject.layer) & LayerCanTrigger) != 0)
+            {
+                onCollider -= 1;
+            }
+
+            if (onCollider <= 0)
+            {
+                trigger = false;
+                animator.SetBool("Trigger", trigger);
+            }
         }
-        
-        if (onCollider <=0)
+    }
+
+    public void BeTrigger()
+    {
+        if (Button == false)
         {
-            trigger=false;
-            animator.SetBool("Trigger", trigger);
+            trigger = !trigger;
+
+            if(trigger == true)
+            {
+                animator.SetFloat("Trigger", 1);
+                Trigger();
+            }
+            else
+            {
+                animator.SetFloat("Trigger", 0);
+                CancelTrigger();
+            }
+            
         }
     }
 
     private void Trigger()
     {
         Platform.GetComponent<Platform>().canMove = true;
+        if(MapTrigger != null)
+        {
+            MapTrigger.SetActive(false);
+        }
     }
 
     private void CancelTrigger()
     {
         Platform.GetComponent<Platform>().canMove = false;
+        if (MapTrigger != null)
+        {
+            MapTrigger.SetActive(true);
+        }
     }
 }

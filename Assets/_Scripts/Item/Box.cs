@@ -30,7 +30,7 @@ public class Box : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag.Equals("Attack"))
+        if (collision.gameObject.tag.Equals("Attack") && collision.gameObject.layer!=0)
         {
             TakeDamaged();
         }

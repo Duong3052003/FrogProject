@@ -16,17 +16,17 @@ public class Player : MonoBehaviour
     private bool isWallJumping;
 
     public float speed = 5f;
-    public float jumpPower = 15f;
+    public float jumpPower = 10f;
     private float downJumpingDuration = 0.6f;
     private bool canDown;
     public bool canJump=true;
-    private Vector2 Superjump = new Vector2(2f,18f);
+    private Vector2 Superjump = new Vector2(2f,14f);
 
     [SerializeField] private float wallSlidingSpeed = 1.5f;
     private float wallJumpingTime=0.2f;
     private float wallJumpingCounter;
     private float wallJumpingDuration=0.5f;
-    private Vector2 wallJumpingPower = new Vector2(10f,17f);
+    private Vector2 wallJumpingPower = new Vector2(10f,19f);
 
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask supergroundLayer;
@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (!player_Ctrl.knockBack.IsBeingKnockBack && rb.bodyType != RigidbodyType2D.Static)
+        if (!player_Ctrl.knockBack.IsBeingKnockBack || rb.bodyType != RigidbodyType2D.Static)
         {
             move = Input.GetAxisRaw("Horizontal");
             animator.SetFloat("xVelocity", Mathf.Abs(move));
@@ -85,8 +85,6 @@ public class Player : MonoBehaviour
             if (canDown == true)
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpPower * (-1f));
-                CancelInvoke(nameof(ChangedTagGroundCheck));
-                groundCheck.tag = "Attack";
             }
         }
         
@@ -98,7 +96,6 @@ public class Player : MonoBehaviour
     {
         if (Input.GetButtonDown("Jump") && canJump==true)
         {
-            groundCheck.tag = "Untagged";
             if (IsGround()!=0)
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpPower);
@@ -176,11 +173,6 @@ public class Player : MonoBehaviour
         if (IsGround()==2)
         {
             OnGround();
-            if (!groundCheck.tag.Equals("Attack"))
-            {
-                rb.velocity = new Vector2(Superjump.x, Superjump.y);
-                SoundManager.Instance.PlaySound(jumpSoundEffect);
-            }
 
         }
         if (IsGround() == 0)
@@ -201,12 +193,6 @@ public class Player : MonoBehaviour
     {
         animator.SetBool("IsJumping", false);
         canDown = false;
-        Invoke(nameof(ChangedTagGroundCheck),0.2f);
-        CancelInvoke(nameof(CanDown)); 
-    }
-    private void ChangedTagGroundCheck()
-    {
-        groundCheck.tag = "Untagged";
     }
     private bool IsWall()
     {
@@ -261,11 +247,10 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag.Equals("Enemy_top") || collision.gameObject.tag.Equals("Box"))
-        if (groundCheck.tag.Equals("Attack"))
         {
             canDown = false;
-            rb.velocity = new Vector2(Superjump.x, Superjump.y*0.7f);
-            Invoke(nameof(CanDown), downJumpingDuration/2);
+            rb.velocity = new Vector2(move * Superjump.x, Superjump.y);
+            SoundManager.Instance.PlaySound(jumpSoundEffect);
         }
     }
     #endregion

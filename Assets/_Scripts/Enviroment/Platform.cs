@@ -9,8 +9,6 @@ public class Platform : Auto_Move
     private Player player;
     private Rigidbody2D rigidbodyPlayer;
 
-    private Vector2 forcePush;
-
     public bool canMove= true;
 
     private void Update()
@@ -44,7 +42,6 @@ public class Platform : Auto_Move
         {
             collision.transform.SetParent(null);
             rigidbodyPlayer = collision.GetComponent<Rigidbody2D>();
-            rigidbodyPlayer.AddForce(forcePush);
         }
     }
 }

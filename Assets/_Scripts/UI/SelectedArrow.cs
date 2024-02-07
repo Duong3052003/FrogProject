@@ -9,6 +9,7 @@ public class SelectedArrow : MonoBehaviour
     [SerializeField] private RectTransform[] options;
     private RectTransform rectTransform;
     private int currentOptionIndex;
+    private bool canMove;
 
     [SerializeField] private AudioClip changedSourceEffect;
     [SerializeField] private AudioClip selectedSourceEffect;
@@ -18,21 +19,25 @@ public class SelectedArrow : MonoBehaviour
     {
         rectTransform = GetComponent<RectTransform>();
         animator = GetComponent<Animator>();
+        canMove = true;
     }
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        if(canMove == true)
         {
-            ChangeOption(-1);
-        }
-        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            ChangeOption(1);
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Interact();
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                ChangeOption(-1);
+            }
+            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                ChangeOption(1);
+            }
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Interact();
+            }
         }
     }
 
@@ -49,17 +54,19 @@ public class SelectedArrow : MonoBehaviour
         {
             currentOptionIndex=0;
         }
-        rectTransform.position = new Vector3(rectTransform.position.x, options[currentOptionIndex].position.y, rectTransform.position.z);
+        rectTransform.position = new Vector3(rectTransform.position.x, options[currentOptionIndex].position.y -7f, rectTransform.position.z);
     }
 
     private void Interact()
     {
         animator.SetTrigger("Interacted");
 
+        canMove = false;
         SoundManager.Instance.PlaySound(selectedSourceEffect);
     }
     private void Interacted()
     {
+        canMove = true;
         options[currentOptionIndex].GetComponent<Button>().onClick.Invoke();
     }
 }

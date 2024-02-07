@@ -22,14 +22,16 @@ public class UIManager : MonoBehaviour
             if (PauseScreen.activeInHierarchy)
             {
                 PauseGame(false);
-                if (SettingScreen.activeInHierarchy)
-                {
-                    SettingScreen.SetActive(false);
-                }
+                
             }
             else
             {
                 PauseGame(true);
+            }
+
+            if (SettingScreen.activeInHierarchy)
+            {
+                SettingScreen.SetActive(false);
             }
         }
     }

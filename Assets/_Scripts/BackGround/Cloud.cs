@@ -11,6 +11,7 @@ public class Cloud : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        Invoke("_Destroy", 30);
     }
 
     void Start()

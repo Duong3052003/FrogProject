@@ -29,40 +29,54 @@ public class PickUp : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(rayPoint.position, transform.right , rayDistance, layerMask);
         if (hit.collider != null)
         {
-            if (grabedOject == null)
+            if (hit.collider.gameObject.layer==13 || hit.collider.gameObject.layer == 14)
             {
-                if (Input.GetKeyDown(KeyCode.J))
+                if (grabedOject == null)
                 {
-                    grabbing = true;
-                    grabedOject=hit.collider.gameObject;
-                    grabedOject.transform.parent = grabPoint; 
-                }
-            }
-            else if (grabedOject != null)
-            {
-                if (Input.GetKeyDown(KeyCode.K))
-                {
-                    Physics2D.IgnoreCollision(CloneBox.GetComponent<BoxCollider2D>(), grabedOject.GetComponent<BoxCollider2D>(),false);
-                    grabedOject.transform.parent = null;
-                    grabbing = false;
-                    if (Player.rightCheck == true)
+                    if (Input.GetKeyDown(KeyCode.J))
                     {
-                        Direction = 1;
+                        grabbing = true;
+                        grabedOject = hit.collider.gameObject;
+                        grabedOject.transform.parent = grabPoint;
                     }
-                    else Direction = -1;
-                    grabedOject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-                    grabedOject.GetComponent<Rigidbody2D>().velocity = new Vector2(Direction, 0.3f) * forceThrow;
-                    grabedOject = null;
                 }
-                if (Input.GetKeyDown(KeyCode.J))
+                else if (grabedOject != null)
                 {
-                    Physics2D.IgnoreCollision(CloneBox.GetComponent<BoxCollider2D>(), grabedOject.GetComponent<BoxCollider2D>(), false);
-                    grabedOject.transform.parent = null;
-                    grabedOject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-                    grabbing = false;
-                    grabedOject = null;
+                    if (Input.GetKeyDown(KeyCode.K))
+                    {
+                        Physics2D.IgnoreCollision(CloneBox.GetComponent<BoxCollider2D>(), grabedOject.GetComponent<BoxCollider2D>(), false);
+                        grabedOject.transform.parent = null;
+                        grabbing = false;
+                        if (Player.rightCheck == true)
+                        {
+                            Direction = 1;
+                        }
+                        else Direction = -1;
+                        grabedOject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+                        grabedOject.GetComponent<Rigidbody2D>().velocity = new Vector2(Direction, 0.3f) * forceThrow;
+                        grabedOject = null;
+                    }
+                    if (Input.GetKeyDown(KeyCode.J))
+                    {
+                        Physics2D.IgnoreCollision(CloneBox.GetComponent<BoxCollider2D>(), grabedOject.GetComponent<BoxCollider2D>(), false);
+                        grabedOject.transform.parent = null;
+                        grabedOject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+                        grabbing = false;
+                        grabedOject = null;
+                    }
                 }
             }
+            else
+            {
+                if (grabedOject == null)
+                {
+                    if (Input.GetKeyDown(KeyCode.J))
+                    {
+                        hit.collider.gameObject.GetComponent<ButtonPlatform>().BeTrigger();
+                    }
+                }
+            }
+            
         }
         if(grabPoint.childCount > 1)
         {
