@@ -47,7 +47,7 @@ public class PickUp : MonoBehaviour
                         Physics2D.IgnoreCollision(CloneBox.GetComponent<BoxCollider2D>(), grabedOject.GetComponent<BoxCollider2D>(), false);
                         grabedOject.transform.parent = null;
                         grabbing = false;
-                        if (Player.rightCheck == true)
+                        if (player_Ctrl.Player.rightCheck == true)
                         {
                             Direction = 1;
                         }

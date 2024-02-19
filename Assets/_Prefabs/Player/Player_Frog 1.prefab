@@ -332,21 +332,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0f9111478d30045afcf36a48811609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallJump: 1
-  wallSlide: 1
-  speed: 5
-  jumpPower: 15
-  canJump: 1
   wallSlidingSpeed: 1.5
   groundLayer:
     serializedVersion: 2
     m_Bits: 17856
-  supergroundLayer:
-    serializedVersion: 2
-    m_Bits: 4096
   wallCheck: {fileID: 2491973681750479061}
   behindCheck: {fileID: 5748031873703311133}
-  groundCheck: {fileID: 1527205485309081102}
+  groundCheck: {fileID: 5018786271894820272}
   jumpSoundEffect: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
 --- !u!114 &5793426816502064410
 MonoBehaviour:

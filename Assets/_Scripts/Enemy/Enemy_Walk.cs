@@ -199,13 +199,6 @@ public class Enemy_Walk : Enemy
         transform.Rotate(0, 180, 0);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag.Equals("Attack") && collision.gameObject.layer == 0)
-        {
-            BeingDead();
-        }
-    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag.Equals("Attack") || ((1 << collision.gameObject.layer) & layerCanHurting) != 0)
@@ -224,7 +217,7 @@ public class Enemy_Walk : Enemy
         PointA.SetActive(true);
         PointB.SetActive(true);
     }
-    private void BeingDead()
+    public void BeingDead()
     {
         canMove = false;
         PointA.SetActive(false);

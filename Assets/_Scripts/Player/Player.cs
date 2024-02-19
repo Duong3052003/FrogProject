@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.SearchService;
@@ -7,19 +8,19 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {   
     private float move;
-    public static bool rightCheck=true;
+    [NonSerialized] public bool rightCheck=true;
     private bool doubleJump;
-    public bool wallJump=true;
-    public bool wallSlide=true;
+    [NonSerialized] public bool wallJump=true;
+    [NonSerialized] public bool wallSlide=true;
 
     private bool isWallSliding;
     private bool isWallJumping;
 
-    public float speed = 5f;
-    public float jumpPower = 10f;
+    [NonSerialized] public float speed = 5f;
+    [NonSerialized] public float jumpPower = 10f;
     private float downJumpingDuration = 0.6f;
     private bool canDown;
-    public bool canJump=true;
+    [NonSerialized] public bool canJump=true;
     private Vector2 Superjump = new Vector2(2f,14f);
 
     [SerializeField] private float wallSlidingSpeed = 1.5f;
@@ -29,15 +30,18 @@ public class Player : MonoBehaviour
     private Vector2 wallJumpingPower = new Vector2(10f,19f);
 
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private LayerMask supergroundLayer;
 
     [SerializeField] private Transform wallCheck;
     [SerializeField] private Transform behindCheck;
-    [SerializeField] private GameObject groundCheck;
+    [SerializeField] private GameObject _GroundCheck;
+    private CheckGround groundCheck;
 
     private Animator animator;
     private Rigidbody2D rb;
     [SerializeField] private AudioClip jumpSoundEffect;
+    
+    private GameObject _CameraFocus;
+    private CameraFocus cameraFocus;
 
     private Player_Ctrl player_Ctrl;
 
@@ -46,6 +50,14 @@ public class Player : MonoBehaviour
         player_Ctrl = GetComponent<Player_Ctrl>();
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        groundCheck = _GroundCheck.GetComponent<CheckGround>();
+    }
+
+    private void Start()
+    {
+        _CameraFocus = GameObject.FindGameObjectWithTag("CameraFocus");
+        cameraFocus = _CameraFocus.GetComponent<CameraFocus>();
+
     }
 
     void Update()
@@ -96,7 +108,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetButtonDown("Jump") && canJump==true)
         {
-            if (IsGround()!=0)
+            if (groundCheck.IsGround != 0)
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpPower);
                 doubleJump = true;
@@ -147,10 +159,9 @@ public class Player : MonoBehaviour
         isWallJumping = false;
     }
 
-
     private void WallSlide()
     {
-        if(IsWall() && IsGround() == 0 && move!=0 && wallSlide==true)
+        if(IsWall() && groundCheck.IsGround == 0 && move!=0 && wallSlide==true)
         {
             isWallSliding = true;
             rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y,-wallSlidingSpeed,float.MaxValue));
@@ -166,21 +177,26 @@ public class Player : MonoBehaviour
 
     private void autoJump()
     {
-        if (IsGround()==1)
-        {
-            OnGround();
-        }
-        if (IsGround()==2)
-        {
-            OnGround();
-
-        }
-        if (IsGround() == 0)
+        if (groundCheck.IsGround == 0)
         {
             Invoke(nameof(CanDown), downJumpingDuration);
             animator.SetBool("IsJumping", true);
-            
         }
+
+        if (groundCheck.IsGround == 1)
+        {
+            OnGround();
+        }
+
+        bool isJumpAttacking = false;
+        if (groundCheck.IsGround == 2 && isJumpAttacking == false)
+        {
+            isJumpAttacking = true;
+            canDown = false;
+            rb.velocity = new Vector2(move * Superjump.x, Superjump.y);
+            SoundManager.Instance.PlaySound(jumpSoundEffect);
+        }
+
     }
     private void CanDown()
     {
@@ -194,25 +210,12 @@ public class Player : MonoBehaviour
         animator.SetBool("IsJumping", false);
         canDown = false;
     }
+
     private bool IsWall()
     {
         return Physics2D.OverlapCircle(wallCheck.position, 0.2f, groundLayer);
     }
-    private int IsGround()
-    {
-        if(Physics2D.OverlapCircle(groundCheck.transform.position, 0.3f, groundLayer))
-        {
-            return 1;
-        }
-        else if(Physics2D.OverlapCircle(groundCheck.transform.position, 0.3f, supergroundLayer))
-        {
-            return 2;
-        }
-        else
-        {
-            return 0;
-        }
-    }
+
     private bool CanReturn()
     {
         if(player_Ctrl.PickUp.grabbing == true)
@@ -234,24 +237,15 @@ public class Player : MonoBehaviour
             if (rightCheck == true)
             {
                 transform.rotation=Quaternion.Euler(0f, 0f, 0f);
+                cameraFocus.CallTurn();
             }
             else
             {
                 transform.rotation=Quaternion.Euler(0f,-180f,0f);
+                cameraFocus.CallTurn();
             }
         }
     }
     #endregion
 
-    #region Jump attack
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.gameObject.tag.Equals("Enemy_top") || collision.gameObject.tag.Equals("Box"))
-        {
-            canDown = false;
-            rb.velocity = new Vector2(move * Superjump.x, Superjump.y);
-            SoundManager.Instance.PlaySound(jumpSoundEffect);
-        }
-    }
-    #endregion
 }

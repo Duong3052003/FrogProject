@@ -21,7 +21,7 @@ public class Box_Break : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         rb.AddForce(forceDirecton);
         rb.AddTorque(torque);
-        Invoke(nameof(DestroyPiece), 3f);
+        Invoke(nameof(DestroyPiece), 7f);
     }
 
     private void DestroyPiece()

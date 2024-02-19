@@ -212,7 +212,7 @@ MonoBehaviour:
   rayDistance: 6
   targetLayer:
     serializedVersion: 2
-    m_Bits: 16392
+    m_Bits: 16840
   audioClip: {fileID: 8300000, guid: 490bfbc72255342408984f60044487de, type: 3}
 --- !u!1 &2028491057275385967
 GameObject:
@@ -809,6 +809,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8391604956458754305}
   - component: {fileID: 7863325194949675131}
+  - component: {fileID: 3986784550633443153}
   m_Layer: 12
   m_Name: Enemy_top
   m_TagString: Enemy_top
@@ -876,6 +877,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.7668705, y: 0.120028436}
   m_EdgeRadius: 0
+--- !u!114 &3986784550633443153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7875033308754815045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3f1e5b30fb3afc4e8bea2d17db30efb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Enemy: {fileID: 1169303536622768285}
 --- !u!1 &8062859695140433253
 GameObject:
   m_ObjectHideFlags: 0

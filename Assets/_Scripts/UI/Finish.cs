@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Finish : MonoBehaviour
 {
-    private AudioClip audioClip;
+    [SerializeField] private AudioClip winSoundEffect;
     private Animator animator;
 
     private void Awake()
@@ -16,7 +16,7 @@ public class Finish : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            SoundManager.Instance.PlaySound(audioClip);
+            SoundManager.Instance.PlaySound(winSoundEffect);
             animator.SetTrigger("Finish");
         }
     }
