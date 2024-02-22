@@ -49,9 +49,9 @@ GameObject:
   - component: {fileID: 1230271950732392938}
   - component: {fileID: 8770995373501840565}
   - component: {fileID: 4928185312429301777}
-  m_Layer: 10
+  m_Layer: 20
   m_Name: Brown
-  m_TagString: Untagged
+  m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -11,9 +11,9 @@ public class Platform : Auto_Move
 
     public bool canMove= true;
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if (canMove==true)
+        if (canMove == true)
         {
             Move();
         }

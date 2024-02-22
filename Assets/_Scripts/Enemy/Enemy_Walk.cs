@@ -81,6 +81,7 @@ public class Enemy_Walk : Enemy
         }
     }
 
+    #region Chase
     private IEnumerator StopTarget()
     {
         canMove = false;
@@ -146,7 +147,9 @@ public class Enemy_Walk : Enemy
             ResetPoint();
         }
     }
+    #endregion
 
+    #region Move
     private void Move()
     {
         if (transform.rotation == Quaternion.Euler(0, 0, 0))
@@ -198,7 +201,9 @@ public class Enemy_Walk : Enemy
     {
         transform.Rotate(0, 180, 0);
     }
+    #endregion
 
+    #region Dead
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag.Equals("Attack") || ((1 << collision.gameObject.layer) & layerCanHurting) != 0)
@@ -226,12 +231,13 @@ public class Enemy_Walk : Enemy
         Enemy_top.SetActive(false);
         Collider.enabled = false;
         animator.SetTrigger("Death");
-        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.bodyType = RigidbodyType2D.Static;
     }
     private void Dead()
     {
         gameObject.SetActive(false);
         SetActiveEnemy();
     }
+    #endregion
 
 }

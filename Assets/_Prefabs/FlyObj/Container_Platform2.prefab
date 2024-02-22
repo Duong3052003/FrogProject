@@ -313,7 +313,7 @@ GameObject:
   - component: {fileID: 8208870809622705154}
   - component: {fileID: 6343839246407412670}
   - component: {fileID: 6173220822430045042}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Button
   m_TagString: Button
   m_Icon: {fileID: 0}
@@ -541,6 +541,7 @@ MonoBehaviour:
   LayerCanTrigger:
     serializedVersion: 2
     m_Bits: 83976
+  MapTrigger: {fileID: 0}
   Button: 1
 --- !u!1 &3631186688393440807
 GameObject:
@@ -785,6 +786,7 @@ MonoBehaviour:
   LayerCanTrigger:
     serializedVersion: 2
     m_Bits: 0
+  MapTrigger: {fileID: 0}
   Button: 0
 --- !u!95 &6497520227227342048
 Animator:

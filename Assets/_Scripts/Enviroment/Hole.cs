@@ -8,7 +8,7 @@ public class Hole : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == 3 || collision.gameObject.layer == 14)
+        if (collision.gameObject.layer == 14 && response != null)
         {
             collision.gameObject.transform.position = response.position;
         }

@@ -10,6 +10,7 @@ public class Player_Collider : MonoBehaviour
 
     private Vector2 direction;
     private bool isWin;
+    private Transform CheckPoint;
 
     [SerializeField] private LayerMask layerCollider;
 
@@ -46,6 +47,17 @@ public class Player_Collider : MonoBehaviour
                 StartCoroutine(GetHurt());
             }
         }
+        if (collision.gameObject.layer == 17)
+        {
+            if (CheckPoint.position != null)
+            {
+                transform.position = CheckPoint.position;
+            }
+            else
+            {
+                transform.localPosition = Vector3.zero;
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -53,6 +65,11 @@ public class Player_Collider : MonoBehaviour
         if (collision.CompareTag("Finish"))
         {
             Win();
+        }
+        if (collision.CompareTag("CheckPoint"))
+        {
+            CheckPoint = collision.gameObject.transform;
+            collision.GetComponent<Collider2D>().enabled = false;
         }
     }
 

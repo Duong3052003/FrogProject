@@ -9,12 +9,14 @@ public class Player : MonoBehaviour
 {   
     private float move;
     [NonSerialized] public bool rightCheck=true;
+    private int direction=1;
     private bool doubleJump;
     [NonSerialized] public bool wallJump=true;
     [NonSerialized] public bool wallSlide=true;
 
     private bool isWallSliding;
     private bool isWallJumping;
+    private bool isAttackJumping;
 
     [NonSerialized] public float speed = 5f;
     [NonSerialized] public float jumpPower = 10f;
@@ -30,6 +32,7 @@ public class Player : MonoBehaviour
     private Vector2 wallJumpingPower = new Vector2(10f,19f);
 
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private LayerMask wallLayer;
 
     [SerializeField] private Transform wallCheck;
     [SerializeField] private Transform behindCheck;
@@ -69,7 +72,10 @@ public class Player : MonoBehaviour
             animator.SetFloat("yVelocity", rb.velocity.y);
             if (!isWallJumping)
             {
-                Flip();
+                if ((rightCheck == true && move < 0f || rightCheck == false && move > 0f) && !CanReturn())
+                {
+                    Flip();
+                }
             }
             Jump();
             WallJump();
@@ -146,10 +152,9 @@ public class Player : MonoBehaviour
         {
             SoundManager.Instance.PlaySound(jumpSoundEffect);
             isWallJumping = true;
-            rb.velocity = new Vector2(-move *wallJumpingPower.x, wallJumpingPower.y);
+            rb.velocity = new Vector2(-direction *wallJumpingPower.x, wallJumpingPower.y);
+            Flip();
             wallJumpingCounter = 0f;
-            rightCheck = !rightCheck;
-            transform.Rotate(0f, 180f, 0f);
             Invoke(nameof(StopWallJumping), wallJumpingDuration);
         }
     }
@@ -161,7 +166,7 @@ public class Player : MonoBehaviour
 
     private void WallSlide()
     {
-        if(IsWall() && groundCheck.IsGround == 0 && move!=0 && wallSlide==true)
+        if(IsWall() && groundCheck.IsGround == 0 && wallSlide==true && (move != 0|| isWallSliding == true|| isWallJumping == true))
         {
             isWallSliding = true;
             rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y,-wallSlidingSpeed,float.MaxValue));
@@ -181,6 +186,7 @@ public class Player : MonoBehaviour
         {
             Invoke(nameof(CanDown), downJumpingDuration);
             animator.SetBool("IsJumping", true);
+            isAttackJumping=false;
         }
 
         if (groundCheck.IsGround == 1)
@@ -188,12 +194,12 @@ public class Player : MonoBehaviour
             OnGround();
         }
 
-        bool isJumpAttacking = false;
-        if (groundCheck.IsGround == 2 && isJumpAttacking == false)
+        if (groundCheck.IsGround == 2 && isAttackJumping==false)
         {
-            isJumpAttacking = true;
-            canDown = false;
+            isAttackJumping = true;
             rb.velocity = new Vector2(move * Superjump.x, Superjump.y);
+            canDown = false;
+            CancelInvoke();
             SoundManager.Instance.PlaySound(jumpSoundEffect);
         }
 
@@ -209,11 +215,12 @@ public class Player : MonoBehaviour
     {
         animator.SetBool("IsJumping", false);
         canDown = false;
+        CancelInvoke();
     }
 
     private bool IsWall()
     {
-        return Physics2D.OverlapCircle(wallCheck.position, 0.2f, groundLayer);
+        return Physics2D.OverlapCircle(wallCheck.position, 0.2f, wallLayer);
     }
 
     private bool CanReturn()
@@ -230,21 +237,21 @@ public class Player : MonoBehaviour
     #region Flip
     private void Flip()
     {
-        if ((rightCheck == true && move < 0f || rightCheck == false && move > 0f) && !CanReturn())
-        { 
-            rightCheck = !rightCheck;
+        rightCheck = !rightCheck;
 
-            if (rightCheck == true)
-            {
-                transform.rotation=Quaternion.Euler(0f, 0f, 0f);
-                cameraFocus.CallTurn();
-            }
-            else
-            {
-                transform.rotation=Quaternion.Euler(0f,-180f,0f);
-                cameraFocus.CallTurn();
-            }
+        if (rightCheck == true)
+        {
+            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+            direction = 1;
+            cameraFocus.CallTurn();
         }
+        else
+        {
+            transform.rotation = Quaternion.Euler(0f, -180f, 0f);
+            direction = -1;
+            cameraFocus.CallTurn();
+        }
+        
     }
     #endregion
 
