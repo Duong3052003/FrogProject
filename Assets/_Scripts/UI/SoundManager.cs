@@ -7,6 +7,7 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance { get; private set; }
     private AudioSource source;
     private AudioSource music;
+    [SerializeField] private AudioClip musicClip;
 
     private void Awake()
     {
@@ -55,5 +56,17 @@ public class SoundManager : MonoBehaviour
         source.volume = currentVolume * baseVolume;
 
         PlayerPrefs.SetFloat(volumeName, currentVolume);
+    }
+
+    public void ChangedBGM(AudioClip _BGM)
+    {
+        music.clip = _BGM;
+        music.Play();
+    }
+
+    public void ReturnBGM()
+    {
+        music.clip = musicClip;
+        music.Play();
     }
 }

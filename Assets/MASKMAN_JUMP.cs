@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
 public class MASKMAN_JUMP : StateMachineBehaviour
@@ -15,7 +16,7 @@ public class MASKMAN_JUMP : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         Vector2 target = new Vector2(Player.position.x, animator.transform.position.y);
-        animator.transform.localPosition = Vector2.MoveTowards(animator.transform.position,target,speed*Time.deltaTime);
+        animator.transform.position = Vector2.MoveTowards(animator.transform.position,target,speed*Time.deltaTime);
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

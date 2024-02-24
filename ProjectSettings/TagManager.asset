@@ -17,6 +17,7 @@ TagManager:
   - CameraFocus
   - CheckPoint
   - Platform
+  - BOSS
   layers:
   - Default
   - TransparentFX
@@ -39,9 +40,9 @@ TagManager:
   - CloneBox
   - Crank
   - Platform
-  - 
-  - 
-  - 
+  - BOSS
+  - Weapon_Enemy
+  - PlayerS
   - 
   - 
   - 

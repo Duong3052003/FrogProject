@@ -10,10 +10,17 @@ public class MASKMAN : MonoBehaviour
     private int hp_Current;
 
     [SerializeField] private Slider hpBar;
+    [SerializeField] private GameObject _explosive;
+    private Explosive explosive;
 
     void Start()
     {
-        
+        explosive = _explosive.GetComponent<Explosive>();
+    }
+
+    private void Explosive()
+    {
+        explosive.Explosivee();
     }
 
     // Update is called once per frame
@@ -21,4 +28,6 @@ public class MASKMAN : MonoBehaviour
     {
         hpBar.value = hp_Current/ hp_Max;
     }
+
+    
 }

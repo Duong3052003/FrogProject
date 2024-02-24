@@ -8,7 +8,7 @@ public class MASKMAN_STAGEONE : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        ranged = Random.Range(0, 2);
+        ranged = Random.Range(0, 1);
 
         if (ranged == 0)
         {
@@ -16,7 +16,7 @@ public class MASKMAN_STAGEONE : StateMachineBehaviour
         }
         else
         {
-            animator.SetTrigger("Jump");
+            animator.SetTrigger("Run");
         }
     }
 

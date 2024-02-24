@@ -14,7 +14,7 @@ public class Enemy_Top : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag.Equals("Attack") && collision.gameObject.layer == 0)
+        if (collision.gameObject.tag.Equals("Attack") && collision.gameObject.layer == 23)
         {
             enemyWalk.BeingDead();
         }

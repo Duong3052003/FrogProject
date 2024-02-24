@@ -71,6 +71,8 @@ public class Player_Collider : MonoBehaviour
             CheckPoint = collision.gameObject.transform;
             collision.GetComponent<Collider2D>().enabled = false;
         }
+
+        
     }
 
     private void TakeKnockBack()
@@ -83,12 +85,24 @@ public class Player_Collider : MonoBehaviour
         Physics2D.IgnoreLayerCollision(3, 11);
         Physics2D.IgnoreLayerCollision(3, 15);
         Physics2D.IgnoreLayerCollision(3, 16);
+        Physics2D.IgnoreLayerCollision(3, 22);
+
+        Physics2D.IgnoreLayerCollision(23, 11);
+        Physics2D.IgnoreLayerCollision(23, 15);
+        Physics2D.IgnoreLayerCollision(23, 16);
+        Physics2D.IgnoreLayerCollision(23, 22);
         animator.SetLayerWeight(1, 1);
         yield return new WaitForSeconds(3);
         animator.SetLayerWeight(1, 0);
         Physics2D.IgnoreLayerCollision(3, 11,false);
         Physics2D.IgnoreLayerCollision(3, 15,false);
         Physics2D.IgnoreLayerCollision(3, 16,false);
+        Physics2D.IgnoreLayerCollision(3, 22, false);
+
+        Physics2D.IgnoreLayerCollision(23, 11, false);
+        Physics2D.IgnoreLayerCollision(23, 15, false);
+        Physics2D.IgnoreLayerCollision(23, 16, false);
+        Physics2D.IgnoreLayerCollision(23, 22, false);
 
     }
 
