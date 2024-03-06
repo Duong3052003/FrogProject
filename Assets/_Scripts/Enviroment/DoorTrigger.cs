@@ -39,9 +39,6 @@ public class DoorTrigger : MonoBehaviour
             {  
                 for (int i = 0; i < Doors.Length; i++)
                 {
-                    //Doors[i].gameObject.layer = 6;
-                    //col = Doors[i].GetComponent<Collider2D>();
-                    //col.isTrigger = false;
                     Doors[i].gameObject.SetActive(true);
                 }
                 SoundManager.Instance.PlaySound(trigger);
@@ -57,10 +54,13 @@ public class DoorTrigger : MonoBehaviour
     {
       for (int i = 0; i < Doors.Length; i++)
           {
-             Doors[i].gameObject.SetActive(false);
-             SoundManager.Instance.PlaySound(cancelTrigger);
+            if (Doors[i] != null)
+            {
+                Doors[i].gameObject.SetActive(false);
+            }
           }
-      if(BGM != null)
+        SoundManager.Instance.PlaySound(cancelTrigger);
+        if (BGM != null)
         {
             SoundManager.Instance.ReturnBGM();
         }

@@ -1,22 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
 public class MASKMAN_JUMP : StateMachineBehaviour
 {
-    private Transform Player;
-    [SerializeField] private float speed;
+    private GameObject _MASKMAN;
+    private MASKMAN MASKMAN;
+    [SerializeField] private float timeMin;
+    [SerializeField] private float timeMax;
+    [SerializeField] private Vector2 jumpVector;
+    private float time;
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Player = GameObject.FindGameObjectWithTag("Player").transform;
+        _MASKMAN = GameObject.FindGameObjectWithTag("BOSS");
+        MASKMAN = _MASKMAN.GetComponent<MASKMAN>();
+        time = Random.Range(timeMin, timeMax);
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Vector2 target = new Vector2(Player.position.x, animator.transform.position.y);
-        animator.transform.position = Vector2.MoveTowards(animator.transform.position,target,speed*Time.deltaTime);
+        if (time <= 0)
+        {
+            animator.SetTrigger("Idle");
+        }
+
+        if (time > 0)
+        {
+            MASKMAN.Jump(jumpVector.x, jumpVector.y);
+            time -= Time.deltaTime;
+        }
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

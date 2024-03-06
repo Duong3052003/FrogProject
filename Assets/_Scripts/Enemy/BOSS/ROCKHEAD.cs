@@ -34,22 +34,19 @@ public class ROCKHEAD : MonoBehaviour
 
     private Rigidbody2D rb;
 
-
-    // Start is called before the first frame update
     void Start()
     {
         idleMoveDirection.Normalize();
         attackMoveDirection.Normalize();
         rb = GetComponent<Rigidbody2D>();
-        ChangedAttack();
     }
 
-    // Update is called once per frame
     void Update()
     {
         isTouchingUp = Physics2D.OverlapCircle(checkUp.position, checkRadius, groundLayer);
         isTouchingDown = Physics2D.OverlapCircle(checkDown.position, checkRadius, groundLayer);
         isTouchingWall = Physics2D.OverlapCircle(checkWall.position, checkRadius, groundLayer);
+        AttackUpNDown();
     }
 
     private void ChangedAttack()
@@ -76,6 +73,7 @@ public class ROCKHEAD : MonoBehaviour
 
         if(isTouchingUp && goingUp)
         {
+            Debug.Log(1);
             ChangedDirection();
         }
         else if(isTouchingDown && !goingUp)

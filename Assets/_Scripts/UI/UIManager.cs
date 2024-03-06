@@ -22,7 +22,6 @@ public class UIManager : MonoBehaviour
             if (PauseScreen.activeInHierarchy)
             {
                 PauseGame(false);
-                
             }
             else
             {

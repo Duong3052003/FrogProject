@@ -112,7 +112,7 @@ public class Player : MonoBehaviour
     #region Jump
     private void Jump()
     {
-        if (Input.GetButtonDown("Jump") && canJump==true)
+        if (Input.GetButtonDown("Jump") && canJump==true && rb.bodyType != RigidbodyType2D.Static)
         {
             if (groundCheck.IsGround != 0)
             {

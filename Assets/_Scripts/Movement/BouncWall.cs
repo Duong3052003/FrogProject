@@ -9,9 +9,9 @@ public class BouncWall : MonoBehaviour
     [SerializeField] Vector2 moveDirection;
 
     [Header("Other")]
-    [SerializeField] Transform checkUp;
-    [SerializeField] Transform checkDown;
-    [SerializeField] Transform checkWall;
+    [SerializeField] protected Transform checkUp;
+    [SerializeField] protected Transform checkDown;
+    [SerializeField] protected Transform checkWall;
     [SerializeField] float checkRadius;
     [SerializeField] LayerMask groundLayer;
 
@@ -19,10 +19,7 @@ public class BouncWall : MonoBehaviour
     private bool isTouchingDown;
     private bool isTouchingWall;
     private bool goingUp = true;
-    private bool isFacingLeft = true;
-    [SerializeField] private float timeMin;
-    [SerializeField] private float timeMax;
-    private float time = 0f;
+    public bool isFacingLeft = true;
 
     private Rigidbody2D rb;
 
@@ -30,6 +27,7 @@ public class BouncWall : MonoBehaviour
     {
         moveDirection.Normalize();
         rb = GetComponent<Rigidbody2D>();
+        checkDirection();
     }
 
     private void Update()
@@ -50,11 +48,6 @@ public class BouncWall : MonoBehaviour
 
     public void InteractWall()
     {
-        if (time <= 0 && timeMin!=0 && timeMax != 0)
-        {
-            time = Random.Range(timeMin, timeMax);
-        }
-
         if (isTouchingUp && goingUp && checkUp != null)
         {
             ChangedDirection();
@@ -67,19 +60,8 @@ public class BouncWall : MonoBehaviour
         {
             Flip();
         }
+        rb.velocity = moveSpeed * moveDirection;
 
-        if (timeMin != 0 && timeMax != 0)
-        {
-            if(time > 0)
-            {
-                rb.velocity = moveSpeed * moveDirection;
-                time -= Time.deltaTime;
-            }
-        }
-        else
-        {
-            rb.velocity = moveSpeed * moveDirection;
-        }
     }
 
     private void ChangedDirection()
@@ -93,6 +75,18 @@ public class BouncWall : MonoBehaviour
         isFacingLeft = !isFacingLeft;
         moveDirection.x *= -1;
         transform.Rotate(0, 180, 0);
+    }
+
+    private void checkDirection()
+    {
+        if(isFacingLeft==true && transform.rotation == Quaternion.Euler(0, 180, 0))
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+        if (isFacingLeft == false && transform.rotation == Quaternion.Euler(0, 0, 0))
+        {
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+        }
     }
 
     private void OnDrawGizmosSelected()

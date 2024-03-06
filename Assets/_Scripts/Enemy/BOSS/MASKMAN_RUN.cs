@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class MASKMAN_RUN : StateMachineBehaviour
 {
-    private Transform Player;
     [SerializeField] private float speed;
     [SerializeField] private float timeMin;
     [SerializeField] private float timeMax;
@@ -15,10 +15,17 @@ public class MASKMAN_RUN : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Player = GameObject.FindGameObjectWithTag("Player").transform;
         MASKMAN = GameObject.FindGameObjectWithTag("BOSS");
         BouncWall = MASKMAN.GetComponent<BouncWall>();
         time = Random.Range(timeMin, timeMax);
+        if (BouncWall.isFacingLeft==true)
+        {
+            animator.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        }
+        if (BouncWall.isFacingLeft == false)
+        {
+            animator.transform.rotation = Quaternion.Euler(0f, -180f, 0f);
+        }
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

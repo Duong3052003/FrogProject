@@ -10,6 +10,7 @@ public class Player_Collider : MonoBehaviour
 
     private Vector2 direction;
     private bool isWin;
+    private bool isBeingDamaged=false;
     private Transform CheckPoint;
 
     [SerializeField] private LayerMask layerCollider;
@@ -72,7 +73,18 @@ public class Player_Collider : MonoBehaviour
             collision.GetComponent<Collider2D>().enabled = false;
         }
 
-        
+        if (collision.gameObject.layer == 22 && isBeingDamaged == false)
+        {
+            isBeingDamaged=true;
+            direction = (transform.position - collision.GetComponent<Collider2D>().bounds.center).normalized;
+            if (rb.bodyType != RigidbodyType2D.Static)
+            {
+                StartCoroutine(GetHurt());
+                TakeKnockBack();
+            }
+            this.player_ctrl.player_TakeDamage.TakeDamage();
+        }
+
     }
 
     private void TakeKnockBack()
@@ -86,11 +98,14 @@ public class Player_Collider : MonoBehaviour
         Physics2D.IgnoreLayerCollision(3, 15);
         Physics2D.IgnoreLayerCollision(3, 16);
         Physics2D.IgnoreLayerCollision(3, 22);
+        Physics2D.IgnoreLayerCollision(3, 24);
 
         Physics2D.IgnoreLayerCollision(23, 11);
         Physics2D.IgnoreLayerCollision(23, 15);
         Physics2D.IgnoreLayerCollision(23, 16);
+        Physics2D.IgnoreLayerCollision(23, 21);
         Physics2D.IgnoreLayerCollision(23, 22);
+        Physics2D.IgnoreLayerCollision(23, 24);
         animator.SetLayerWeight(1, 1);
         yield return new WaitForSeconds(3);
         animator.SetLayerWeight(1, 0);
@@ -98,11 +113,15 @@ public class Player_Collider : MonoBehaviour
         Physics2D.IgnoreLayerCollision(3, 15,false);
         Physics2D.IgnoreLayerCollision(3, 16,false);
         Physics2D.IgnoreLayerCollision(3, 22, false);
+        Physics2D.IgnoreLayerCollision(3, 24, false);
 
         Physics2D.IgnoreLayerCollision(23, 11, false);
         Physics2D.IgnoreLayerCollision(23, 15, false);
         Physics2D.IgnoreLayerCollision(23, 16, false);
+        Physics2D.IgnoreLayerCollision(23, 21, false);
         Physics2D.IgnoreLayerCollision(23, 22, false);
+        Physics2D.IgnoreLayerCollision(23, 24, false);
+        isBeingDamaged= false;
 
     }
 

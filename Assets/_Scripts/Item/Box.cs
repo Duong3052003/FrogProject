@@ -8,6 +8,7 @@ public class Box : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private AudioClip hitedSoundEffect;
+    [SerializeField] private float timeChanged;
     private Rigidbody2D rb;
 
     private Animator Animator;
@@ -81,8 +82,12 @@ public class Box : MonoBehaviour
 
     private IEnumerator tagBox()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(timeChanged);
         gameObject.tag = "Box";
+        if (gameObject.layer != 14)
+        {
+            gameObject.layer = 14;
+        }
         rb.bodyType= RigidbodyType2D.Static;
 
     }

@@ -199,8 +199,9 @@ MonoBehaviour:
     m_Bits: 1472
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 71680
+    m_Bits: 23140352
   hitedSoundEffect: {fileID: 8300000, guid: 023ea3ddeaa8dd146b7633a0800e5a0e, type: 3}
+  timeChanged: 0.1
 --- !u!1 &5763381968755743261
 GameObject:
   m_ObjectHideFlags: 0

@@ -25,4 +25,5 @@ public class Fruit : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
 }

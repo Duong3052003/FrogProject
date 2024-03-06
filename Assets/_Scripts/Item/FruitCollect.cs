@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FruifCollect : MonoBehaviour
+public class FruifCollect : MonoBehaviour, SaveGameObj
 {
     private static FruifCollect instance;
     public static FruifCollect Instance => instance;
@@ -39,4 +39,13 @@ public class FruifCollect : MonoBehaviour
         text.text= "Point: " + point_total;
     }
 
+    public void SaveData(ref SaveDataGame data)
+    {
+        data.point_total = this.point_total;
+    }
+
+    public void LoadData(SaveDataGame data)
+    {
+        this.point_total = data.point_total;
+    }
 }

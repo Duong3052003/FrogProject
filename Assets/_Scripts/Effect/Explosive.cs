@@ -9,24 +9,28 @@ public class Explosive : MonoBehaviour
     [SerializeField] private bool lockY;
 
     [SerializeField] private ParticleSystem[] explosives;
+    [SerializeField] private bool isDamage = true;
     [SerializeField] private GameObject damage;
     [SerializeField] private AudioClip explosivesEffect;
 
-    private void Update()
-    {
-        if (lockY == true)
-        {
-            transform.position = new Vector3(Target.position.x, transform.position.y, transform.position.z);
-        }
-        else
-        {
-            transform.position = new Vector3(Target.position.x, Target.position.y, transform.position.z);
-        }
-    }
-
     public void Explosivee()
     {
-        damage.gameObject.SetActive(true);
+        if (Target != null)
+        {
+            if (lockY == true)
+            {
+                transform.position = new Vector3(Target.position.x, transform.position.y, transform.position.z);
+            }
+            else
+            {
+                transform.position = new Vector3(Target.position.x, Target.position.y, transform.position.z);
+            }
+        }
+        
+        if (isDamage == true)
+        {
+            damage.gameObject.SetActive(true);
+        }
         SoundManager.Instance.PlaySound(explosivesEffect);
 
         for (int i = 0; i < explosives.Length; i++)
@@ -38,7 +42,10 @@ public class Explosive : MonoBehaviour
 
     private void CancelExplosive()
     {
-        damage.gameObject.SetActive(false);
+        if (isDamage == true)
+        {
+            damage.gameObject.SetActive(false);
+        }
         CancelInvoke();
     }
 }

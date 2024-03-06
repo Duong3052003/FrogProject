@@ -46,7 +46,10 @@ public class KnockBack : MonoBehaviour
             {
                 _combinedForce = _knockBackForce;
             }
-            rb.velocity = _combinedForce;
+            if(rb.bodyType != RigidbodyType2D.Static)
+            {
+                rb.velocity = _combinedForce;
+            }
 
             yield return new WaitForFixedUpdate();
         }

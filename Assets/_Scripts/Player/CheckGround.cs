@@ -23,7 +23,7 @@ public class CheckGround : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag.Equals("Enemy_top"))
+        if (collision.gameObject.tag.Equals("Enemy_top")|| collision.gameObject.tag.Equals("BOSS"))
         {
             IsGround = 2;
         }

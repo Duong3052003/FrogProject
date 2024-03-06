@@ -7,12 +7,13 @@ public class Box_Break : MonoBehaviour
     private Vector2 forceDirecton;
     private float torque;
     private Rigidbody2D rb;
+    [SerializeField] private float range;
 
     void Start()
     {
-        float randTorque = UnityEngine.Random.Range(-50, 50);
-        float randForceX = UnityEngine.Random.Range(-50, 50);
-        float randForceY = UnityEngine.Random.Range(-50, 50);
+        float randTorque = UnityEngine.Random.Range(-range, range);
+        float randForceX = UnityEngine.Random.Range(-range, range);
+        float randForceY = UnityEngine.Random.Range(-range, range);
         
         forceDirecton.x = randForceX;
         forceDirecton.y = randForceY;
