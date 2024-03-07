@@ -8,6 +8,7 @@ public class Box_Break : MonoBehaviour
     private float torque;
     private Rigidbody2D rb;
     [SerializeField] private float range;
+    [SerializeField] private GameObject Container_Box;
 
     void Start()
     {
@@ -22,12 +23,15 @@ public class Box_Break : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         rb.AddForce(forceDirecton);
         rb.AddTorque(torque);
-        Invoke(nameof(DestroyPiece), 7f);
+        Invoke(nameof(DestroyPiece), 5f);
     }
 
     private void DestroyPiece()
     {
-        Destroy(gameObject);
+        if(Container_Box != null)
+        {
+            Destroy(Container_Box);
+        }
     }
 
 }

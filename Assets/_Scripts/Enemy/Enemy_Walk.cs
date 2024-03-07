@@ -75,7 +75,7 @@ public class Enemy_Walk : Enemy
     private void FixedUpdate()
     {
         animator.SetBool("CanMove", canMove);
-        if (canMove == true)
+        if (canMove == true && rb.bodyType != RigidbodyType2D.Static)
         {
             Move();
         }

@@ -4,20 +4,26 @@ using UnityEngine;
 
 public class Box : MonoBehaviour
 {
+    [SerializeField] private bool isIronBox = false;
+
     [SerializeField] private GameObject Box_Break;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] private AudioClip hitedSoundEffect;
     [SerializeField] private float timeChanged;
+
     private Rigidbody2D rb;
 
-    private Animator Animator;
+    private Animator animator;
 
     private int hp = 2;
 
     void Start()
     {
-        Animator = GetComponent<Animator>();
+        if (isIronBox == false)
+        {
+        animator = GetComponent<Animator>();
+        }
         rb = GetComponent<Rigidbody2D>();
     }
     private void Update()
@@ -31,9 +37,12 @@ public class Box : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag.Equals("Attack") && collision.gameObject.layer!=0)
+        if (isIronBox == false)
         {
-            TakeDamaged();
+            if (collision.gameObject.tag.Equals("Attack") && collision.gameObject.layer != 0)
+            {
+                TakeDamaged();
+            }
         }
     }
 
@@ -102,7 +111,10 @@ public class Box : MonoBehaviour
         else
         {
             SoundManager.Instance.PlaySound(hitedSoundEffect);
-            Animator.SetTrigger("Hited");
+            if (animator != null)
+            {
+                animator.SetTrigger("Hited");
+            }
         }
     }
     void Breaked()

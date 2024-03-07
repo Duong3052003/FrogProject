@@ -5,8 +5,13 @@ using System.Linq;
 
 public class SaveManager : MonoBehaviour
 {
+    [Header("File Storage Config")]
+
+    [SerializeField] private string fileName;
+
     private SaveDataGame saveDataGame;
-    private List<SaveGameObj> SaveGameObjs;
+    private List<SaveGameObj> saveGameObjs;
+    private FileDataHandle fileDataHandle;
 
 
     public static SaveManager instance { get; private set; }
@@ -25,7 +30,8 @@ public class SaveManager : MonoBehaviour
 
     private void Start()
     {
-        this.SaveGameObjs = FindAllSaveGames();
+        this.fileDataHandle = new FileDataHandle(Application.persistentDataPath, fileName);
+        this.saveGameObjs = FindAllSaveGames();
         LoadGame();
     }
 
@@ -43,27 +49,27 @@ public class SaveManager : MonoBehaviour
 
     public void LoadGame()
     {
+        this.saveDataGame = fileDataHandle.Load();
+
         if(this.saveDataGame == null)
         {
-            Debug.Log("NO DATA");
             NewGame();
         }
 
-        foreach(SaveGameObj saveGameObj in SaveGameObjs)
+        foreach(SaveGameObj saveGameObj in saveGameObjs)
         {
             saveGameObj.LoadData(saveDataGame);
         }
 
-        Debug.Log("Load:" + saveDataGame.point_total);
     }
 
     public void SaveGame()
     {
-        foreach (SaveGameObj saveGameObj in SaveGameObjs)
+        foreach (SaveGameObj saveGameObj in saveGameObjs)
         {
             saveGameObj.SaveData(ref saveDataGame);
         }
-        Debug.Log("SAve:" + saveDataGame.point_total);
 
+        fileDataHandle.Save(saveDataGame);
     }
 }
