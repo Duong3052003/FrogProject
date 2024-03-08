@@ -12,7 +12,8 @@ public class FruifCollect : MonoBehaviour, SaveGameObj
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] private AudioClip collectSoundEffect;
 
-    private int point_total = 0;
+    [SerializeField] private int point_total = 0;
+    private int point_collected = 0;
 
     private void Awake()
     {
@@ -27,25 +28,31 @@ public class FruifCollect : MonoBehaviour, SaveGameObj
 
     }
 
-    private void Start()
+    private void Update()
     {
-        text.text= "Point: "+ point_total;
+        text.text= "Point: "+ point_collected + "/" + point_total;
     }
 
     public void Collect(int point)
     {
         SoundManager.Instance.PlaySound(collectSoundEffect);
-        point_total = point_total+ point;
-        text.text= "Point: " + point_total;
+        point_collected = point_collected + point;
     }
 
     public void SaveData(ref SaveDataGame data)
     {
-        data.point_total = this.point_total;
+        //data.point_total = this.point_collected;
     }
 
     public void LoadData(SaveDataGame data)
     {
-        this.point_total = data.point_total;
+        //this.point_collected = data.point_total;
+        foreach (KeyValuePair<string, bool> pair in data.fruitCollected)
+        {
+            if (pair.Value)
+            {
+                point_collected++;
+            }
+        }
     }
 }

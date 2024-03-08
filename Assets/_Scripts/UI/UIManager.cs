@@ -5,32 +5,40 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] private bool isInGame=true;
     [SerializeField] private GameObject GameOverScreen;
     [SerializeField] private GameObject Finish;
     [SerializeField] private GameObject PauseScreen;
     [SerializeField] private GameObject SettingScreen;
+    [SerializeField] private GameObject MenuGameArrow;
 
     private void Awake()
     {
-        PauseScreen.SetActive(false);
+        if (isInGame)
+        {
+            PauseScreen.SetActive(false);
+        }
     }
 
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Escape))
+        if (isInGame)
         {
-            if (PauseScreen.activeInHierarchy)
+            if (Input.GetKeyUp(KeyCode.Escape))
             {
-                PauseGame(false);
-            }
-            else
-            {
-                PauseGame(true);
-            }
+                if (PauseScreen.activeInHierarchy)
+                {
+                    PauseGame(false);
+                }
+                else
+                {
+                    PauseGame(true);
+                }
 
-            if (SettingScreen.activeInHierarchy)
-            {
-                SettingScreen.SetActive(false);
+                if (SettingScreen.activeInHierarchy)
+                {
+                    SettingScreen.SetActive(false);
+                }
             }
         }
     }
@@ -100,16 +108,32 @@ public class UIManager : MonoBehaviour
 
     public void Setting()
     {
-        if (PauseScreen.activeInHierarchy)
+        if (isInGame)
         {
-            SettingScreen.SetActive(true);
-            PauseScreen.SetActive(false);
-        }else if (SettingScreen.activeInHierarchy)
-        {
-            PauseScreen.SetActive(true);
-            SettingScreen.SetActive(false);
+            if (PauseScreen.activeInHierarchy)
+            {
+                SettingScreen.SetActive(true);
+                PauseScreen.SetActive(false);
+            }
+            else if (SettingScreen.activeInHierarchy)
+            {
+                PauseScreen.SetActive(true);
+                SettingScreen.SetActive(false);
+            }
         }
-        
+        else
+        {
+            if (MenuGameArrow.activeInHierarchy)
+            {
+                SettingScreen.SetActive(true);
+                MenuGameArrow.SetActive(false);
+            }
+            else if (SettingScreen.activeInHierarchy)
+            {
+                MenuGameArrow.SetActive(true);
+                SettingScreen.SetActive(false);
+            }
+        }
     }
 
     public void SoundVolume()

@@ -39,8 +39,9 @@ public class Player_Collider : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         direction = (transform.position- collision.collider.transform.position).normalized;
-        if (((1 << collision.gameObject.layer) & layerCollider) != 0)
+        if (((1 << collision.gameObject.layer) & layerCollider) != 0 && isBeingDamaged == false)
         {
+            isBeingDamaged = true;
             this.player_ctrl.player_TakeDamage.TakeDamage();
             if(rb.bodyType != RigidbodyType2D.Static)
             {
@@ -48,8 +49,9 @@ public class Player_Collider : MonoBehaviour
                 StartCoroutine(GetHurt());
             }
         }
-        if (collision.gameObject.layer == 17)
+        if (collision.gameObject.layer == 17 && isBeingDamaged == false)
         {
+            isBeingDamaged = true;
             if (CheckPoint.position != null)
             {
                 transform.position = CheckPoint.position;

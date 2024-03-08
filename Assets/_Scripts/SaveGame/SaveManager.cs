@@ -8,6 +8,7 @@ public class SaveManager : MonoBehaviour
     [Header("File Storage Config")]
 
     [SerializeField] private string fileName;
+    [SerializeField] private bool useEncryption;
 
     private SaveDataGame saveDataGame;
     private List<SaveGameObj> saveGameObjs;
@@ -30,7 +31,7 @@ public class SaveManager : MonoBehaviour
 
     private void Start()
     {
-        this.fileDataHandle = new FileDataHandle(Application.persistentDataPath, fileName);
+        this.fileDataHandle = new FileDataHandle(Application.persistentDataPath, fileName, useEncryption);
         this.saveGameObjs = FindAllSaveGames();
         LoadGame();
     }
@@ -53,6 +54,7 @@ public class SaveManager : MonoBehaviour
 
         if(this.saveDataGame == null)
         {
+            Debug.Log("No datas was found");
             NewGame();
         }
 
@@ -61,6 +63,7 @@ public class SaveManager : MonoBehaviour
             saveGameObj.LoadData(saveDataGame);
         }
 
+        //Debug.Log("Load point: " + saveDataGame.point_total);
     }
 
     public void SaveGame()
@@ -69,7 +72,13 @@ public class SaveManager : MonoBehaviour
         {
             saveGameObj.SaveData(ref saveDataGame);
         }
+        //Debug.Log("Save point: " + saveDataGame.point_total);
 
         fileDataHandle.Save(saveDataGame);
+    }
+
+    private void OnApplicationQuit()
+    {
+        SaveGame();
     }
 }
