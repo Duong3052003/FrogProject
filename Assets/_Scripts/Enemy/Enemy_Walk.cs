@@ -228,7 +228,6 @@ public class Enemy_Walk : Enemy
         PointA.SetActive(false);
         PointB.SetActive(false);
         SoundManager.Instance.PlaySound(audioClip);
-        Enemy_top.SetActive(false);
         Collider.enabled = false;
         animator.SetTrigger("Death");
         rb.bodyType = RigidbodyType2D.Static;

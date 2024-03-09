@@ -16,7 +16,6 @@ public class Player_Collider : MonoBehaviour
     [SerializeField] private LayerMask layerCollider;
 
     private Player_Ctrl player_ctrl;
-    private UIManager uiManager;
     [SerializeField] private AudioClip dieSoundEffect;
 
     private void Awake()
@@ -24,8 +23,10 @@ public class Player_Collider : MonoBehaviour
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         player_ctrl= GetComponent<Player_Ctrl>();
-        uiManager=FindAnyObjectByType<UIManager>();
         isWin = false;
+
+        //Ve trang thai ban dau
+        WasHurted();
     }
 
     private void Start()
@@ -49,9 +50,10 @@ public class Player_Collider : MonoBehaviour
                 StartCoroutine(GetHurt());
             }
         }
-        if (collision.gameObject.layer == 17 && isBeingDamaged == false)
+        if (collision.gameObject.layer == 17)
         {
             isBeingDamaged = true;
+
             if (CheckPoint.position != null)
             {
                 transform.position = CheckPoint.position;
@@ -60,6 +62,10 @@ public class Player_Collider : MonoBehaviour
             {
                 transform.localPosition = Vector3.zero;
             }
+            this.player_ctrl.player_TakeDamage.TakeDamage();
+            TakeKnockBack();
+            StartCoroutine(GetHurt());
+
         }
     }
 
@@ -96,6 +102,14 @@ public class Player_Collider : MonoBehaviour
 
     private IEnumerator GetHurt()
     {
+        IsHurting();
+        yield return new WaitForSeconds(3);
+        WasHurted();
+
+    }
+
+    private void IsHurting()
+    {
         Physics2D.IgnoreLayerCollision(3, 11);
         Physics2D.IgnoreLayerCollision(3, 15);
         Physics2D.IgnoreLayerCollision(3, 16);
@@ -109,11 +123,14 @@ public class Player_Collider : MonoBehaviour
         Physics2D.IgnoreLayerCollision(23, 22);
         Physics2D.IgnoreLayerCollision(23, 24);
         animator.SetLayerWeight(1, 1);
-        yield return new WaitForSeconds(3);
+    }
+
+    private void WasHurted()
+    {
         animator.SetLayerWeight(1, 0);
-        Physics2D.IgnoreLayerCollision(3, 11,false);
-        Physics2D.IgnoreLayerCollision(3, 15,false);
-        Physics2D.IgnoreLayerCollision(3, 16,false);
+        Physics2D.IgnoreLayerCollision(3, 11, false);
+        Physics2D.IgnoreLayerCollision(3, 15, false);
+        Physics2D.IgnoreLayerCollision(3, 16, false);
         Physics2D.IgnoreLayerCollision(3, 22, false);
         Physics2D.IgnoreLayerCollision(3, 24, false);
 
@@ -123,8 +140,7 @@ public class Player_Collider : MonoBehaviour
         Physics2D.IgnoreLayerCollision(23, 21, false);
         Physics2D.IgnoreLayerCollision(23, 22, false);
         Physics2D.IgnoreLayerCollision(23, 24, false);
-        isBeingDamaged= false;
-
+        isBeingDamaged = false;
     }
 
     public void BeingDead()
@@ -141,11 +157,11 @@ public class Player_Collider : MonoBehaviour
         Destroy(gameObject);
         if (isWin == true)
         {
-            uiManager.Win();
+            UIManager.instance.Win();
         }
         else
         {
-            uiManager.GameOver();
+            UIManager.instance.GameOver();
         }
         
     }

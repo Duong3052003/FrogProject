@@ -1,9 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {   
@@ -182,6 +180,15 @@ public class Player : MonoBehaviour
 
     private void autoJump()
     {
+        if (groundCheck.IsGround == 2 && isAttackJumping == false)
+        {
+            isAttackJumping = true;
+            rb.velocity = new Vector2(move * Superjump.x, Superjump.y);
+            canDown = false;
+            CancelInvoke();
+            SoundManager.Instance.PlaySound(jumpSoundEffect);
+        }
+
         if (groundCheck.IsGround == 0)
         {
             Invoke(nameof(CanDown), downJumpingDuration);
@@ -194,14 +201,7 @@ public class Player : MonoBehaviour
             OnGround();
         }
 
-        if (groundCheck.IsGround == 2 && isAttackJumping==false)
-        {
-            isAttackJumping = true;
-            rb.velocity = new Vector2(move * Superjump.x, Superjump.y);
-            canDown = false;
-            CancelInvoke();
-            SoundManager.Instance.PlaySound(jumpSoundEffect);
-        }
+        
 
     }
     private void CanDown()

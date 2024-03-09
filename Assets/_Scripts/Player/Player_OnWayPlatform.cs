@@ -26,14 +26,14 @@ public class Player_OnWayPlatfom : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == 10)
+        if (collision.gameObject.layer == 20)
         {
             OneWayPlatform = collision.gameObject;
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == 10)
+        if (collision.gameObject.layer == 20)
         {
             OneWayPlatform = null;
         }

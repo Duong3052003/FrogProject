@@ -12,7 +12,7 @@ public class FruifCollect : MonoBehaviour, SaveGameObj
     [SerializeField] private TextMeshProUGUI text;
     [SerializeField] private AudioClip collectSoundEffect;
 
-    [SerializeField] private int point_total = 0;
+    //[SerializeField] private int point_total = 0;
     private int point_collected = 0;
 
     private void Awake()
@@ -30,7 +30,7 @@ public class FruifCollect : MonoBehaviour, SaveGameObj
 
     private void Update()
     {
-        text.text= "Point: "+ point_collected + "/" + point_total;
+        text.text= "Point: "+ point_collected;
     }
 
     public void Collect(int point)

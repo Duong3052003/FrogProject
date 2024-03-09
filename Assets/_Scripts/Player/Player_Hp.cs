@@ -14,6 +14,9 @@ public class Player_Hp : MonoBehaviour
 
     public virtual void TakeDamage()
     {
-        hp -=1;
+        if (UIManager.GodMode == false)
+        {
+            hp -= 1;
+        }
     }
 }

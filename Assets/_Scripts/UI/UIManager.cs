@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,10 +11,27 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject Finish;
     [SerializeField] private GameObject PauseScreen;
     [SerializeField] private GameObject SettingScreen;
+    [SerializeField] private GameObject MenuGameScreen;
     [SerializeField] private GameObject MenuGameArrow;
+    [SerializeField] private GameObject SelectLevelScreen;
+    [SerializeField] private TextMeshProUGUI GodModeText;
+    [SerializeField] private Animator transitionAnimator;
+    private SaveManager saveManager;
+
+    public static UIManager instance { get; private set; }
+    public static bool GodMode=false;
 
     private void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Debug.LogError("1 UI Manager thoi");
+        }
+
         if (isInGame)
         {
             PauseScreen.SetActive(false);
@@ -41,6 +59,23 @@ public class UIManager : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            if (Input.GetKeyUp(KeyCode.Escape))
+            {
+                if (SelectLevelScreen.activeInHierarchy)
+                {
+                    SelectLevelScreen.SetActive(false);
+                    MenuGameScreen.SetActive(true);
+                }
+                if (SettingScreen.activeInHierarchy)
+                {
+                    SettingScreen.SetActive(false);
+                    MenuGameArrow.SetActive(true);
+                }
+            }
+            
+        }
     }
 
     public void GameOver()
@@ -56,35 +91,80 @@ public class UIManager : MonoBehaviour
         if (Finish != null)
         {
             Finish.SetActive(true);
+            SaveManager.instance.SaveGame();
         }
     }
 
     public void Restart()
     {
+        StartCoroutine(LoadRestart());
+    }
+    private IEnumerator LoadRestart()
+    {
+        Time.timeScale = 1;
+        transitionAnimator.SetTrigger("End");
+        yield return new WaitForSeconds(1);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         SceneManager.LoadScene(1, LoadSceneMode.Additive);
+        transitionAnimator.SetTrigger("Start");
     }
+
 
     public void NextLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        SceneManager.LoadScene(1, LoadSceneMode.Additive);
+        StartCoroutine(LoadLevel());
+    }
+    private IEnumerator LoadLevel()
+    {
+        transitionAnimator.SetTrigger("End");
+        yield return new WaitForSeconds(1);
+        if (SceneManager.GetActiveScene().buildIndex < 4)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            SceneManager.LoadScene(1, LoadSceneMode.Additive);
+        }
+        else
+        {
+            MainMenu();
+        }
+        transitionAnimator.SetTrigger("Start");
     }
 
     public void MainMenu()
     {
-        SceneManager.LoadScene(0);
+        StartCoroutine(LoadMenu());
     }
-
+    private IEnumerator LoadMenu()
+    {
+        Time.timeScale = 1;
+        transitionAnimator.SetTrigger("End");
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadScene(0);
+        transitionAnimator.SetTrigger("Start");
+    }
     public void Quit()
     {
         Application.Quit();
-        UnityEditor.EditorApplication.isPlaying=false;
+    }
+
+    public void SelectLevels()
+    {
+        if (MenuGameScreen.activeInHierarchy)
+        {
+            SelectLevelScreen.SetActive(true);
+            MenuGameScreen.SetActive(false);
+        }
+        else if (SettingScreen.activeInHierarchy)
+        {
+            MenuGameScreen.SetActive(true);
+            SelectLevelScreen.SetActive(false);
+        }
     }
 
     public void SelectLevel(int level)
     {
-        SceneManager.LoadScene($"_Scenes/Level_{level}");
+        SceneManager.LoadScene($"_Scenes/Level/Level_{level}");
+        SceneManager.LoadScene(1, LoadSceneMode.Additive);
     }
 
     public void Shop()
@@ -144,5 +224,18 @@ public class UIManager : MonoBehaviour
     public void MusicVolume()
     {
         SoundManager.Instance.ChangedMusic(0.2f);
+    }
+
+    public void ActiveGodMode()
+    {
+        GodMode = !GodMode;
+        if (GodMode)
+        {
+            GodModeText.color = new Color32(40, 68, 217, 255);
+        }
+        else
+        {
+            GodModeText.color = Color.white;
+        }
     }
 }
