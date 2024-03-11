@@ -6,7 +6,9 @@ public class Enemy_Top : MonoBehaviour
 {
     [SerializeField] private GameObject Enemy;
     private Enemy_Walk enemyWalk;
+    private MASKMAN maskMan;
     private bool isBeingDead=false;
+    [SerializeField] private bool isBoss=false;
 
     private void OnEnable()
     {
@@ -15,15 +17,30 @@ public class Enemy_Top : MonoBehaviour
 
     void Start()
     {
-        enemyWalk = Enemy.GetComponent<Enemy_Walk>();
+        if (isBoss == false)
+        {
+            enemyWalk = Enemy.GetComponent<Enemy_Walk>();
+        }
+        else
+        {
+            maskMan = Enemy.GetComponent<MASKMAN>();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag.Equals("Attack") && collision.gameObject.layer == 23 && isBeingDead==false)
         {
-            isBeingDead = true;
-            enemyWalk.BeingDead();
+            if (!isBoss)
+            {
+                isBeingDead = true;
+                enemyWalk.BeingDead();
+            }
+            else
+            {
+                maskMan.TakeDamage(); 
+            }
+            
         }
     }
 }

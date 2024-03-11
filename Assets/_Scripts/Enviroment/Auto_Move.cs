@@ -19,6 +19,11 @@ public class Auto_Move : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
+    protected virtual void FixedUpdate()
+    {
+        Move();
+    }
+
     Vector2 currentTarget()
     {
         if (direction == 1)

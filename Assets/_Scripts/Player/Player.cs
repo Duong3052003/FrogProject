@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     private float downJumpingDuration = 0.6f;
     private bool canDown;
     [NonSerialized] public bool canJump=true;
-    private Vector2 Superjump = new Vector2(2f,14f);
+    private Vector2 Superjump = new Vector2(2f,18f);
     
     [Header("Wall Jump")]
     [NonSerialized] public bool wallJump = true;
@@ -72,7 +72,6 @@ public class Player : MonoBehaviour
     {
         if (!player_Ctrl.knockBack.IsBeingKnockBack || rb.bodyType != RigidbodyType2D.Static)
         {
-            move = Input.GetAxisRaw("Horizontal");
             animator.SetFloat("xVelocity", Mathf.Abs(move));
             animator.SetFloat("yVelocity", rb.velocity.y);
             if (!isWallJumping)
@@ -85,6 +84,7 @@ public class Player : MonoBehaviour
             Jump();
             WallJump();
             WallSlide();
+
         }
     }
     private void FixedUpdate()
@@ -93,9 +93,9 @@ public class Player : MonoBehaviour
         {
             Move();
         }
+        
         ChangeGravity();
         autoJump();
-
     }
 
     #region Move
@@ -103,9 +103,22 @@ public class Player : MonoBehaviour
     {
         if (!isWallJumping)
         {
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKey(KeyCode.RightArrow))
+            {
+                move = 1;
+            }
+            else if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKey(KeyCode.LeftArrow))
+            {
+                move = -1;
+            }
+            else
+            {
+                move = 0;
+            }
+
             rb.velocity = new Vector2(move * speed, rb.velocity.y);
         }
-        if (Input.GetKeyDown("s") || Input.GetKey("s"))
+        if (Input.GetKeyDown("s") || Input.GetKey("s") || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKey(KeyCode.DownArrow))
         {
             if (canDown == true)
             {
@@ -121,7 +134,7 @@ public class Player : MonoBehaviour
     #region Jump
     private void Jump()
     {
-        if (Input.GetButtonDown("Jump") && canJump==true && rb.bodyType != RigidbodyType2D.Static)
+        if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.UpArrow)) && canJump==true && rb.bodyType != RigidbodyType2D.Static)
         {
             if (groundCheck.IsGround != 0)
             {
@@ -131,12 +144,13 @@ public class Player : MonoBehaviour
             }
             else if(doubleJump == true)
             {
+                animator.SetTrigger("DoubleJump");
                 rb.velocity = new Vector2(rb.velocity.x, jumpPower * 0.8f);
                 doubleJump = false;
                 SoundManager.Instance.PlaySound(jumpSoundEffect);
             }
         }
-        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0 && canJump == true)
+        if ((Input.GetButtonUp("Jump") || Input.GetKeyUp(KeyCode.UpArrow)) && rb.velocity.y > 0 && canJump == true)
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
         }
@@ -157,7 +171,7 @@ public class Player : MonoBehaviour
 
         }
 
-        if (Input.GetButtonDown("Jump") && wallJumpingCounter >0f && isWallSliding && wallJump == true && rb.bodyType != RigidbodyType2D.Static)
+        if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.UpArrow)) && wallJumpingCounter >0f && isWallSliding && wallJump == true && rb.bodyType != RigidbodyType2D.Static)
         {
             Invoke(nameof(StopWallJumping), wallJumpingDuration);
             SoundManager.Instance.PlaySound(jumpSoundEffect);
@@ -235,6 +249,7 @@ public class Player : MonoBehaviour
     #region check ground/wall
     private void OnGround()
     {
+        isWallJumping = false;
         animator.SetBool("IsJumping", false);
         canDown = false;
         CancelInvoke(nameof(CanDown));

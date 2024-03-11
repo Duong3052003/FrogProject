@@ -19,6 +19,9 @@ public class SelectedArrow : MonoBehaviour
     {
         rectTransform = GetComponent<RectTransform>();
         animator = GetComponent<Animator>();
+    }
+    private void OnEnable()
+    {
         canMove = true;
     }
 

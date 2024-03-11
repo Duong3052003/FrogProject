@@ -225,13 +225,13 @@ public class Enemy_Walk : Enemy
     //}
     public void BeingDead()
     {
+        Collider.enabled = false;
         canMove = false;
         PointA.SetActive(false);
         PointB.SetActive(false);
         SoundManager.Instance.PlaySound(audioClip);
         particleDead.transform.position = transform.position;
         particleDead.Play();
-        Collider.enabled = false;
         animator.SetTrigger("Death");
         rb.bodyType = RigidbodyType2D.Static;
     }

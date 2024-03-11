@@ -11,11 +11,11 @@ public class Platform : Auto_Move
 
     public bool canMove= true;
 
-    private void FixedUpdate()
+    protected override void FixedUpdate()
     {
         if (canMove == true)
         {
-            Move();
+            base.FixedUpdate();
         }
     }
 

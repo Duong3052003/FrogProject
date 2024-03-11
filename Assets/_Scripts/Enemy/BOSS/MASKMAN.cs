@@ -71,15 +71,8 @@ public class MASKMAN : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag.Equals("Attack") && collision.gameObject.layer == 23)
-        {
-            TakeDamage();
-        }
-    }
 
-    private void TakeDamage()
+    public void TakeDamage()
     {
         hp_Current -= 1;
         if (hp_Current <= 0 && isStage2 ==false)

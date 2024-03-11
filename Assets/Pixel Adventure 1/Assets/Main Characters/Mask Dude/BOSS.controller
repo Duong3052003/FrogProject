@@ -1126,8 +1126,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac60170b2871d0a438e69d5f12fd2775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeMin: 3
-  timeMax: 5
+  timeMin: 2
+  timeMax: 3
   rangedMin: 0
   rangedMax: 2
 --- !u!114 &7242211051421635882
@@ -1142,8 +1142,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac60170b2871d0a438e69d5f12fd2775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeMin: 50
-  timeMax: 51
+  timeMin: 47
+  timeMax: 50
   rangedMin: 0
   rangedMax: 3
 --- !u!1102 &7387295748453342251

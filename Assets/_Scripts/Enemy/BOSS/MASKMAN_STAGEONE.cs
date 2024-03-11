@@ -16,7 +16,6 @@ public class MASKMAN_STAGEONE : StateMachineBehaviour
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        
         if (eslapedTime < time)
         {
             eslapedTime += Time.deltaTime;
