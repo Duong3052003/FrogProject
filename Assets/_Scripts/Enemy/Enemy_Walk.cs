@@ -30,6 +30,7 @@ public class Enemy_Walk : Enemy
     private Enemy_Check enemy_check;
 
     [SerializeField] private AudioClip audioClip;
+    [SerializeField] private ParticleSystem particleDead;
 
     protected override void Awake()
     {
@@ -212,30 +213,38 @@ public class Enemy_Walk : Enemy
         }
     }
 
-    private void SetActiveEnemy()
-    {
-        rb.bodyType = RigidbodyType2D.Dynamic;
-        Enemy_top.SetActive(true);
-        canMove = true;
-        transform.localPosition = Vector3.zero;
-        Collider.enabled = true;
-        PointA.SetActive(true);
-        PointB.SetActive(true);
-    }
+    //private void SetActiveEnemy()
+    //{
+    //    rb.bodyType = RigidbodyType2D.Dynamic;
+    //    Enemy_top.SetActive(true);
+    //    canMove = true;
+    //    transform.localPosition = Vector3.zero;
+    //    Collider.enabled = true;
+    //    PointA.SetActive(true);
+    //    PointB.SetActive(true);
+    //}
     public void BeingDead()
     {
         canMove = false;
         PointA.SetActive(false);
         PointB.SetActive(false);
         SoundManager.Instance.PlaySound(audioClip);
+        particleDead.transform.position = transform.position;
+        particleDead.Play();
         Collider.enabled = false;
         animator.SetTrigger("Death");
         rb.bodyType = RigidbodyType2D.Static;
     }
+
+    private void PreDead()
+    {
+        Enemy_top.SetActive(false);
+    }
+
     private void Dead()
     {
         gameObject.SetActive(false);
-        SetActiveEnemy();
+        //SetActiveEnemy();
     }
     #endregion
 

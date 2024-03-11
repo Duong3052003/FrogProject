@@ -27,9 +27,16 @@ public class PickUp : MonoBehaviour
     private void Update()
     {
         RaycastHit2D hit = Physics2D.Raycast(rayPoint.position, transform.right , rayDistance, layerMask);
+        Grab(hit);
+        CheckGrabed();
+    }
+
+
+    private void Grab(RaycastHit2D hit)
+    {
         if (hit.collider != null)
         {
-            if (hit.collider.gameObject.layer==13 || hit.collider.gameObject.layer == 14)
+            if (hit.collider.gameObject.layer == 13 || hit.collider.gameObject.layer == 14)
             {
                 if (grabedOject == null)
                 {
@@ -76,9 +83,13 @@ public class PickUp : MonoBehaviour
                     }
                 }
             }
-            
+
         }
-        if(grabPoint.childCount > 1)
+    }
+
+    private void CheckGrabed()
+    {
+        if (grabPoint.childCount > 1)
         {
             if (grabbing == true)
             {
@@ -87,7 +98,7 @@ public class PickUp : MonoBehaviour
                 grabedOject.GetComponent<Rigidbody2D>().isKinematic = true;
                 grabedOject.transform.position = grabPoint.position;
                 grabedOject.tag = "Attack";
-                player_Ctrl.Player.jumpPower = 10f;
+                player_Ctrl.Player.jumpPower = 12f;
                 player_Ctrl.Player.wallJump = false;
                 player_Ctrl.Player.wallSlide = false;
             }
@@ -95,16 +106,15 @@ public class PickUp : MonoBehaviour
 
         if (grabedOject.IsDestroyed())
         {
-           grabbing=false;
+            grabbing = false;
         }
 
         if (grabbing == false)
         {
             CloneBox.GetComponent<BoxCollider2D>().isTrigger = true;
-            player_Ctrl.Player.jumpPower = 15f;
+            player_Ctrl.Player.jumpPower = 20f;
             player_Ctrl.Player.wallJump = true;
             player_Ctrl.Player.wallSlide = true;
         }
-    
     }
 }

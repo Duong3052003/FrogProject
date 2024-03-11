@@ -9,7 +9,7 @@ public class SpikeHead : Enemy
     [SerializeField] private GameObject Check;
     [SerializeField] private LayerMask layerCheck;
     [SerializeField] private LayerMask layerWall;
-    [SerializeField] private ParticleSystem particleDead=null;
+    [SerializeField] private ParticleSystem particleDead;
 
     public static Transform currentTarget;
 

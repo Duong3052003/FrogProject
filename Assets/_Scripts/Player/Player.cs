@@ -4,24 +4,29 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
-{   
+{
+    [Header("Move")]
     private float move;
     [NonSerialized] public bool rightCheck=true;
     private int direction=1;
+    [NonSerialized] public float speed = 7f;
+
+    [Header("Jump")]
     private bool doubleJump;
-    [NonSerialized] public bool wallJump=true;
-    [NonSerialized] public bool wallSlide=true;
+    private bool isDownJumping;
 
-    private bool isWallSliding;
-    private bool isWallJumping;
-    private bool isAttackJumping;
-
-    [NonSerialized] public float speed = 5f;
     [NonSerialized] public float jumpPower = 10f;
     private float downJumpingDuration = 0.6f;
     private bool canDown;
     [NonSerialized] public bool canJump=true;
     private Vector2 Superjump = new Vector2(2f,14f);
+    
+    [Header("Wall Jump")]
+    [NonSerialized] public bool wallJump = true;
+    [NonSerialized] public bool wallSlide = true;
+
+    private bool isWallSliding;
+    private bool isWallJumping;
 
     [SerializeField] private float wallSlidingSpeed = 1.5f;
     private float wallJumpingTime=0.2f;
@@ -29,6 +34,8 @@ public class Player : MonoBehaviour
     private float wallJumpingDuration=0.5f;
     private Vector2 wallJumpingPower = new Vector2(10f,19f);
 
+
+    [Header("Other")]
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
 
@@ -78,7 +85,6 @@ public class Player : MonoBehaviour
             Jump();
             WallJump();
             WallSlide();
-            autoJump();
         }
     }
     private void FixedUpdate()
@@ -87,6 +93,9 @@ public class Player : MonoBehaviour
         {
             Move();
         }
+        ChangeGravity();
+        autoJump();
+
     }
 
     #region Move
@@ -103,7 +112,9 @@ public class Player : MonoBehaviour
                 rb.velocity = new Vector2(rb.velocity.x, jumpPower * (-1f));
             }
         }
+
         
+
     }
     #endregion
 
@@ -130,7 +141,7 @@ public class Player : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
         }
     }
-
+    #region WallJump
     private void WallJump()
     {
         if (isWallSliding)
@@ -146,14 +157,14 @@ public class Player : MonoBehaviour
 
         }
 
-        if (Input.GetButtonDown("Jump") && wallJumpingCounter >0f && isWallSliding && wallJump == true)
+        if (Input.GetButtonDown("Jump") && wallJumpingCounter >0f && isWallSliding && wallJump == true && rb.bodyType != RigidbodyType2D.Static)
         {
+            Invoke(nameof(StopWallJumping), wallJumpingDuration);
             SoundManager.Instance.PlaySound(jumpSoundEffect);
-            isWallJumping = true;
             rb.velocity = new Vector2(-direction *wallJumpingPower.x, wallJumpingPower.y);
             Flip();
+            isWallJumping = true;
             wallJumpingCounter = 0f;
-            Invoke(nameof(StopWallJumping), wallJumpingDuration);
         }
     }
 
@@ -164,7 +175,7 @@ public class Player : MonoBehaviour
 
     private void WallSlide()
     {
-        if(IsWall() && groundCheck.IsGround == 0 && wallSlide==true && (move != 0|| isWallSliding == true|| isWallJumping == true))
+        if(IsWall() && groundCheck.IsGround == 0 && wallSlide==true && (move != 0|| isWallSliding == true|| isWallJumping == true) && rb.bodyType != RigidbodyType2D.Static)
         {
             isWallSliding = true;
             rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y,-wallSlidingSpeed,float.MaxValue));
@@ -176,13 +187,14 @@ public class Player : MonoBehaviour
             animator.SetBool("IsSliding", isWallSliding);
         }
     }
+    #endregion
 
 
     private void autoJump()
     {
-        if (groundCheck.IsGround == 2 && isAttackJumping == false)
+        if (groundCheck.IsGround == 2 && isDownJumping == false)
         {
-            isAttackJumping = true;
+            isDownJumping = true;
             rb.velocity = new Vector2(move * Superjump.x, Superjump.y);
             canDown = false;
             CancelInvoke();
@@ -193,21 +205,31 @@ public class Player : MonoBehaviour
         {
             Invoke(nameof(CanDown), downJumpingDuration);
             animator.SetBool("IsJumping", true);
-            isAttackJumping=false;
+            isDownJumping = false;
         }
-
         if (groundCheck.IsGround == 1)
         {
             OnGround();
         }
-
-        
-
     }
     private void CanDown()
     {
         canDown = true;
     }
+
+    private void ChangeGravity()
+    {
+        if (rb.velocity.y <= 0)
+        {
+            rb.gravityScale = 5;
+        }
+        if (rb.velocity.y > 0)
+        {
+            rb.gravityScale = 6f;
+        }
+    }
+
+    
     #endregion
 
     #region check ground/wall
@@ -215,12 +237,12 @@ public class Player : MonoBehaviour
     {
         animator.SetBool("IsJumping", false);
         canDown = false;
-        CancelInvoke();
+        CancelInvoke(nameof(CanDown));
     }
 
     private bool IsWall()
     {
-        return Physics2D.OverlapCircle(wallCheck.position, 0.2f, wallLayer);
+        return Physics2D.OverlapCircle(wallCheck.position, 0.1f, wallLayer);
     }
 
     private bool CanReturn()

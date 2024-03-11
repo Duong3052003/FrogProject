@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static Cinemachine.DocumentationSortingAttribute;
 
 public class UIManager : MonoBehaviour
 {
@@ -29,7 +30,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("1 UI Manager thoi");
+            Destroy(gameObject);
         }
 
         if (isInGame)
@@ -142,6 +143,7 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene(0);
         transitionAnimator.SetTrigger("Start");
     }
+
     public void Quit()
     {
         Application.Quit();
@@ -160,12 +162,20 @@ public class UIManager : MonoBehaviour
             SelectLevelScreen.SetActive(false);
         }
     }
-
     public void SelectLevel(int level)
     {
+        StartCoroutine(LoadSelectLevel(level));
+    }
+    private IEnumerator LoadSelectLevel(int level)
+    {
+        Time.timeScale = 1;
+        transitionAnimator.SetTrigger("End");
+        yield return new WaitForSeconds(1);
         SceneManager.LoadScene($"_Scenes/Level/Level_{level}");
         SceneManager.LoadScene(1, LoadSceneMode.Additive);
+        transitionAnimator.SetTrigger("Start");
     }
+
 
     public void Shop()
     {

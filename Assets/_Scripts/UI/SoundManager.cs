@@ -17,11 +17,15 @@ public class SoundManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
         }
+
+        ChangedVolume(0.5f, "musicVolume", 0, music);
+        ChangedVolume(1, "soundVolume", 0, source);
     }
 
     public void PlaySound(AudioClip _sound)
