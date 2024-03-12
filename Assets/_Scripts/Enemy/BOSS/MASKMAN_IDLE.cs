@@ -41,6 +41,10 @@ public class MASKMAN_IDLE : StateMachineBehaviour
                 {
                     animator.SetTrigger("Teleport");
                 }
+                if (ranged == 3)
+                {
+                    animator.SetTrigger("Idle");
+                }
         }
     }
 

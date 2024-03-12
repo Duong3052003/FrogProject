@@ -7,6 +7,7 @@ public class CameraFocus : MonoBehaviour
     private Transform playerTransform;
 
     [SerializeField] private float flipRotationTime=0.5f;
+    private float speed = 2;
 
     private Coroutine turnCoutine;
     private Player _Player;
@@ -23,7 +24,7 @@ public class CameraFocus : MonoBehaviour
     private void Update()
     {
        if(_Player != null)
-       transform.position= playerTransform.position;
+       transform.position= Vector3.Lerp(transform.position, playerTransform.position, speed*Time.deltaTime) ;
         
     }
 

@@ -97,7 +97,6 @@ public class Box : MonoBehaviour
         {
             gameObject.layer = 14;
         }
-        rb.bodyType= RigidbodyType2D.Static;
 
     }
 

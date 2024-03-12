@@ -17,7 +17,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject SelectLevelScreen;
     [SerializeField] private TextMeshProUGUI GodModeText;
     [SerializeField] private Animator transitionAnimator;
-    private SaveManager saveManager;
 
     public static UIManager instance { get; private set; }
     public static bool GodMode=false;
@@ -174,6 +173,12 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene($"_Scenes/Level/Level_{level}");
         SceneManager.LoadScene(1, LoadSceneMode.Additive);
         transitionAnimator.SetTrigger("Start");
+    }
+    public void NewGame()
+    {
+        SaveManager.instance.NewGame();
+        SaveManager.instance.SaveGame();
+        SelectLevel(1);
     }
 
 

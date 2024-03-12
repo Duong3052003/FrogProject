@@ -1264,6 +1264,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!198 &364375363 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 822019219619517, guid: 68222daab95981d4bbc660b2a53c4ee9, type: 3}
+  m_PrefabInstance: {fileID: 7959508270329902491}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &494815006
 GameObject:
   m_ObjectHideFlags: 0
@@ -3711,6 +3716,12 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 1066432
+  MovementParticle: {fileID: 2128001001}
+  FallParticle: {fileID: 364375363}
+  TouchParticle: {fileID: 1944572184}
+  occurAfterVelocity: 4
+  dustFormationPeriod: 0.08
+  playerRb: {fileID: 7959508270329902492}
 --- !u!1 &1398769140
 GameObject:
   m_ObjectHideFlags: 0
@@ -5754,6 +5765,11 @@ MonoBehaviour:
   SelectLevelScreen: {fileID: 0}
   GodModeText: {fileID: 0}
   transitionAnimator: {fileID: 786173973}
+--- !u!198 &1944572184 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 6232004360774103011, guid: 68222daab95981d4bbc660b2a53c4ee9, type: 3}
+  m_PrefabInstance: {fileID: 7959508270329902491}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2049363364
 GameObject:
   m_ObjectHideFlags: 0
@@ -5991,6 +6007,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!198 &2128001001 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 6639859064149598928, guid: 68222daab95981d4bbc660b2a53c4ee9, type: 3}
+  m_PrefabInstance: {fileID: 7959508270329902491}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2134058053
 GameObject:
   m_ObjectHideFlags: 0
@@ -6247,6 +6268,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 516619251}
     m_Modifications:
+    - target: {fileID: 793706379627343622, guid: 68222daab95981d4bbc660b2a53c4ee9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 793706379627343622, guid: 68222daab95981d4bbc660b2a53c4ee9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1371053999506449009, guid: 68222daab95981d4bbc660b2a53c4ee9, type: 3}
       propertyPath: m_Size.x
       value: 0.5
@@ -6411,6 +6440,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1331901578}
   m_SourcePrefab: {fileID: 100100000, guid: 68222daab95981d4bbc660b2a53c4ee9, type: 3}
+--- !u!50 &7959508270329902492 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 7642754969317449067, guid: 68222daab95981d4bbc660b2a53c4ee9, type: 3}
+  m_PrefabInstance: {fileID: 7959508270329902491}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

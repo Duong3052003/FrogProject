@@ -58,9 +58,19 @@ public class MASKMAN : MonoBehaviour
 
     }
 
+    private void OnEnable()
+    {
+        isBeingDead=false;
+    }
+
     void Update()
     {
         hpBar.value = hp_Current;
+        if (Player == null && isBeingDead == false)
+        {
+            isBeingDead = true;
+            animator.SetTrigger("IsDead");
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     private float move;
     [NonSerialized] public bool rightCheck=true;
     private int direction=1;
-    [NonSerialized] public float speed = 7f;
+    public float speed = 7f;
 
     [Header("Jump")]
     private bool doubleJump;
@@ -31,7 +31,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float wallSlidingSpeed = 1.5f;
     private float wallJumpingTime=0.2f;
     private float wallJumpingCounter;
-    private float wallJumpingDuration=0.5f;
+    private float wallJumpingDuration=0.6f;
     private Vector2 wallJumpingPower = new Vector2(10f,19f);
 
 
@@ -106,10 +106,18 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKey(KeyCode.RightArrow))
             {
                 move = 1;
+                if (IsWall())
+                {
+                    groundCheck.PlayTouchParticle(wallCheck.transform.position);
+                }
             }
             else if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKey(KeyCode.LeftArrow))
             {
                 move = -1;
+                if (IsWall())
+                {
+                    groundCheck.PlayTouchParticle(wallCheck.transform.position);
+                }
             }
             else
             {
@@ -189,8 +197,10 @@ public class Player : MonoBehaviour
 
     private void WallSlide()
     {
-        if(IsWall() && groundCheck.IsGround == 0 && wallSlide==true && (move != 0|| isWallSliding == true|| isWallJumping == true) && rb.bodyType != RigidbodyType2D.Static)
+        if(IsWall() && groundCheck.IsGround == 0 && wallSlide==true  && rb.bodyType != RigidbodyType2D.Static)
         {
+            groundCheck.PlayTouchParticle(wallCheck.transform.position);
+
             isWallSliding = true;
             rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y,-wallSlidingSpeed,float.MaxValue));
             animator.SetBool("IsSliding", isWallSliding);
@@ -206,7 +216,7 @@ public class Player : MonoBehaviour
 
     private void autoJump()
     {
-        if (groundCheck.IsGround == 2 && isDownJumping == false)
+        if (groundCheck.IsGround == 2 && isDownJumping == false && rb.bodyType != RigidbodyType2D.Static)
         {
             isDownJumping = true;
             rb.velocity = new Vector2(move * Superjump.x, Superjump.y);

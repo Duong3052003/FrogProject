@@ -302,6 +302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 150
+  Container_Box: {fileID: 8525302734871650053}
 --- !u!1 &8525302734871650053
 GameObject:
   m_ObjectHideFlags: 0
@@ -507,6 +508,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13339d1cfcbb3b14695562a85d6e50a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isIronBox: 0
   Box_Break: {fileID: 894500124381153497}
   groundLayer:
     serializedVersion: 2
@@ -709,3 +711,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 150
+  Container_Box: {fileID: 8525302734871650053}

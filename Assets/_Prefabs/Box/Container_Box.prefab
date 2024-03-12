@@ -197,7 +197,7 @@ MonoBehaviour:
   Box_Break: {fileID: 8965511751795112728}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 1472
+    m_Bits: 0
   enemyLayer:
     serializedVersion: 2
     m_Bits: 23140352
